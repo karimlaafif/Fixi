@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import ma.fixi.view.component.PasswordInput?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<!-- Écran « Créer un compte ». Contrôleur : ma.fixi.controller.RegisterController -->
+<HBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="ma.fixi.controller.RegisterController" spacing="28">
+    <padding><Insets top="28" right="28" bottom="28" left="28"/></padding>
+
+    <fx:include source="brand-panel.fxml"/>
+
+    <ScrollPane fitToWidth="true" HBox.hgrow="ALWAYS" minWidth="460" hbarPolicy="NEVER">
+        <StackPane>
+            <VBox styleClass="auth-card" maxWidth="480" spacing="0">
+                <StackPane.margin><Insets top="4" bottom="4"/></StackPane.margin>
+
+                <Label text="Créer un compte" styleClass="auth-form-title"/>
+                <Label text="Quelques informations suffisent pour commencer." styleClass="page-subtitle">
+                    <VBox.margin><Insets top="6" bottom="22"/></VBox.margin>
+                </Label>
+
+                <HBox fx:id="errorBox" styleClass="form-alert" spacing="10" alignment="CENTER_LEFT" visible="false" managed="false">
+                    <FontIcon iconLiteral="fth-alert-circle" iconSize="17" styleClass="icon"/>
+                    <Label fx:id="errorLabel" wrapText="true"/>
+                    <VBox.margin><Insets bottom="16"/></VBox.margin>
+                </HBox>
+
+                <Label text="Je suis" styleClass="form-label"/>
+                <HBox styleClass="segmented">
+                    <VBox.margin><Insets top="8" bottom="16"/></VBox.margin>
+                    <fx:define><ToggleGroup fx:id="accountType"/></fx:define>
+                    <ToggleButton fx:id="particulierToggle" text="Particulier" toggleGroup="$accountType" selected="true"
+                                  maxWidth="Infinity" HBox.hgrow="ALWAYS">
+                        <graphic><FontIcon iconLiteral="fth-user" iconSize="15" styleClass="icon"/></graphic>
+                    </ToggleButton>
+                    <ToggleButton fx:id="syndicToggle" text="Syndic" toggleGroup="$accountType"
+                                  maxWidth="Infinity" HBox.hgrow="ALWAYS">
+                        <graphic><FontIcon iconLiteral="fth-users" iconSize="15" styleClass="icon"/></graphic>
+                    </ToggleButton>
+                    <ToggleButton fx:id="artisanToggle" text="Artisan" toggleGroup="$accountType"
+                                  maxWidth="Infinity" HBox.hgrow="ALWAYS">
+                        <graphic><FontIcon iconLiteral="fth-tool" iconSize="15" styleClass="icon"/></graphic>
+                    </ToggleButton>
+                </HBox>
+
+                <Label text="Nom complet" styleClass="form-label"/>
+                <StackPane>
+                    <VBox.margin><Insets top="8"/></VBox.margin>
+                    <TextField fx:id="nameField" promptText="Prénom et nom" styleClass="field-with-icon"/>
+                    <FontIcon iconLiteral="fth-user" iconSize="17" styleClass="icon-muted" mouseTransparent="true"
+                              StackPane.alignment="CENTER_LEFT">
+                        <StackPane.margin><Insets left="14"/></StackPane.margin>
+                    </FontIcon>
+                </StackPane>
+                <Label fx:id="nameError" styleClass="field-error" visible="false" managed="false"/>
+
+                <Label text="E-mail" styleClass="form-label">
+                    <VBox.margin><Insets top="14"/></VBox.margin>
+                </Label>
+                <StackPane>
+                    <VBox.margin><Insets top="8"/></VBox.margin>
+                    <TextField fx:id="emailField" promptText="nom@exemple.ma" styleClass="field-with-icon"/>
+                    <FontIcon iconLiteral="fth-mail" iconSize="17" styleClass="icon-muted" mouseTransparent="true"
+                              StackPane.alignment="CENTER_LEFT">
+                        <StackPane.margin><Insets left="14"/></StackPane.margin>
+                    </FontIcon>
+                </StackPane>
+                <Label fx:id="emailError" styleClass="field-error" visible="false" managed="false"/>
+
+                <HBox spacing="6" alignment="BASELINE_LEFT">
+                    <VBox.margin><Insets top="14"/></VBox.margin>
+                    <Label text="Téléphone" styleClass="form-label"/>
+                    <Label text="(facultatif)" styleClass="form-hint"/>
+                </HBox>
+                <StackPane>
+                    <VBox.margin><Insets top="8"/></VBox.margin>
+                    <TextField fx:id="phoneField" promptText="+212 6 12 34 56 78" styleClass="field-with-icon"/>
+                    <FontIcon iconLiteral="fth-phone" iconSize="17" styleClass="icon-muted" mouseTransparent="true"
+                              StackPane.alignment="CENTER_LEFT">
+                        <StackPane.margin><Insets left="14"/></StackPane.margin>
+                    </FontIcon>
+                </StackPane>
+                <Label fx:id="phoneError" styleClass="field-error" visible="false" managed="false"/>
+
+                <Label text="Mot de passe" styleClass="form-label">
+                    <VBox.margin><Insets top="14"/></VBox.margin>
+                </Label>
+                <PasswordInput fx:id="passwordField" promptText="8 caractères minimum">
+                    <VBox.margin><Insets top="8"/></VBox.margin>
+                </PasswordInput>
+                <Label fx:id="passwordError" styleClass="field-error" visible="false" managed="false"/>
+
+                <Label text="Confirmer le mot de passe" styleClass="form-label">
+                    <VBox.margin><Insets top="14"/></VBox.margin>
+                </Label>
+                <PasswordInput fx:id="confirmField" promptText="Saisissez-le à nouveau">
+                    <VBox.margin><Insets top="8"/></VBox.margin>
+                </PasswordInput>
+                <Label fx:id="confirmError" styleClass="field-error" visible="false" managed="false"/>
+
+                <Button fx:id="submitButton" text="Créer mon compte" styleClass="btn-primary,btn-large" maxWidth="Infinity"
+                        defaultButton="true" onAction="#onSubmit">
+                    <VBox.margin><Insets top="24"/></VBox.margin>
+                </Button>
+
+                <HBox alignment="CENTER" spacing="4">
+                    <VBox.margin><Insets top="16"/></VBox.margin>
+                    <Label text="Vous avez déjà un compte ?" styleClass="text-muted"/>
+                    <Hyperlink text="Se connecter" styleClass="link" onAction="#onBackToLogin"/>
+                </HBox>
+            </VBox>
+        </StackPane>
+    </ScrollPane>
+</HBox>

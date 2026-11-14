@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<!-- Mon profil (tous les rôles). Contrôleur : ma.fixi.controller.ProfileController -->
+<ScrollPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ma.fixi.controller.ProfileController" fitToWidth="true" hbarPolicy="NEVER">
+    <VBox styleClass="page-content" spacing="20">
+        <HBox styleClass="card" spacing="18" alignment="CENTER_LEFT" maxWidth="760">
+            <StackPane fx:id="avatarBox"/>
+            <VBox spacing="4">
+                <Label fx:id="nameTitle" styleClass="h2"/>
+                <Label fx:id="roleLabel" styleClass="text-muted"/>
+            </VBox>
+        </HBox>
+
+        <VBox styleClass="card" spacing="0" maxWidth="760">
+            <padding><Insets top="24" right="28" bottom="24" left="28"/></padding>
+            <Label text="Informations du compte" styleClass="section-title">
+                <VBox.margin><Insets bottom="18"/></VBox.margin>
+            </Label>
+
+            <VBox fx:id="clientTypeBox" spacing="8">
+                <VBox.margin><Insets bottom="16"/></VBox.margin>
+                <Label text="Type de compte" styleClass="form-label"/>
+                <HBox styleClass="segmented" maxWidth="-Infinity">
+                    <fx:define><ToggleGroup fx:id="clientTypeGroup"/></fx:define>
+                    <ToggleButton fx:id="particulierToggle" text="Particulier" toggleGroup="$clientTypeGroup" prefWidth="150"/>
+                    <ToggleButton fx:id="syndicToggle" text="Syndic" toggleGroup="$clientTypeGroup" prefWidth="150"/>
+                </HBox>
+            </VBox>
+
+            <Label text="Nom complet" styleClass="form-label"/>
+            <TextField fx:id="nameField">
+                <VBox.margin><Insets top="8"/></VBox.margin>
+            </TextField>
+            <Label fx:id="nameError" styleClass="field-error" visible="false" managed="false"/>
+
+            <Label text="E-mail" styleClass="form-label">
+                <VBox.margin><Insets top="16"/></VBox.margin>
+            </Label>
+            <TextField fx:id="emailField">
+                <VBox.margin><Insets top="8"/></VBox.margin>
+            </TextField>
+            <Label fx:id="emailError" styleClass="field-error" visible="false" managed="false"/>
+
+            <HBox spacing="6" alignment="BASELINE_LEFT">
+                <VBox.margin><Insets top="16"/></VBox.margin>
+                <Label text="Téléphone" styleClass="form-label"/><Label text="(facultatif)" styleClass="form-hint"/>
+            </HBox>
+            <TextField fx:id="phoneField" promptText="+212 6 12 34 56 78">
+                <VBox.margin><Insets top="8"/></VBox.margin>
+            </TextField>
+            <Label fx:id="phoneError" styleClass="field-error" visible="false" managed="false"/>
+
+            <HBox spacing="12" alignment="CENTER_RIGHT">
+                <VBox.margin><Insets top="26"/></VBox.margin>
+                <Button text="Annuler les modifications" styleClass="btn-ghost" onAction="#onReset"/>
+                <Button fx:id="saveButton" text="Enregistrer" styleClass="btn-primary" onAction="#onSave">
+                    <graphic><FontIcon iconLiteral="fth-check" iconSize="16" styleClass="icon"/></graphic>
+                </Button>
+            </HBox>
+        </VBox>
+
+        <HBox styleClass="card-tint" spacing="10" alignment="CENTER_LEFT" maxWidth="760">
+            <FontIcon iconLiteral="fth-info" iconSize="16" styleClass="icon-primary"/>
+            <Label text="Le changement de mot de passe et la vérification par code arriveront dans une prochaine version."
+                   styleClass="text-subtle" wrapText="true"/>
+        </HBox>
+    </VBox>
+</ScrollPane>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.StackPane?>
+
+<!-- Page prévue pour une itération suivante. Contrôleur : ma.fixi.controller.PlaceholderController -->
+<StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="ma.fixi.controller.PlaceholderController" fx:id="root" styleClass="page-content"/>

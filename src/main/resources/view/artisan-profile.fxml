@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<!-- Profil public d'un artisan. Paramètre de navigation : l'id de l'artisan.
+     Contrôleur : ma.fixi.controller.ArtisanProfileController -->
+<ScrollPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ma.fixi.controller.ArtisanProfileController" fitToWidth="true" hbarPolicy="NEVER">
+    <VBox styleClass="page-content" spacing="22">
+
+        <Button text="Retour" styleClass="link" onAction="#onBack">
+            <graphic><FontIcon iconLiteral="fth-arrow-left" iconSize="15" styleClass="icon"/></graphic>
+        </Button>
+
+        <!-- En-tête : identité, informations clés, actions -->
+        <HBox styleClass="card-hero" spacing="28" alignment="CENTER_LEFT">
+            <StackPane fx:id="avatarBox"/>
+            <VBox spacing="6" HBox.hgrow="ALWAYS" minWidth="220">
+                <HBox fx:id="nameRow" spacing="12" alignment="CENTER_LEFT">
+                    <Label fx:id="nameLabel" styleClass="profile-name" wrapText="true" minWidth="0"/>
+                </HBox>
+                <Label fx:id="tradeLabel" styleClass="trade-label" style="-fx-font-size: 16px;"/>
+                <HBox fx:id="ratingBox"/>
+            </VBox>
+            <Region styleClass="divider-vertical" minHeight="90"/>
+            <VBox fx:id="factsBox" spacing="10" minWidth="190"/>
+            <Region styleClass="divider-vertical" minHeight="90"/>
+            <VBox spacing="10" minWidth="200">
+                <Button fx:id="requestButton" text="Demander un devis" styleClass="btn-primary,btn-large"
+                        maxWidth="Infinity" onAction="#onRequest">
+                    <graphic><FontIcon iconLiteral="fth-file-plus" iconSize="17" styleClass="icon"/></graphic>
+                </Button>
+                <Button text="Contacter" styleClass="btn-secondary,btn-large" maxWidth="Infinity" onAction="#onContact">
+                    <graphic><FontIcon iconLiteral="fth-message-square" iconSize="17" styleClass="icon"/></graphic>
+                </Button>
+            </VBox>
+        </HBox>
+
+        <HBox spacing="24">
+            <VBox styleClass="card" spacing="18" HBox.hgrow="ALWAYS" prefWidth="620">
+                <HBox styleClass="segmented,tab-switch" maxWidth="-Infinity">
+                    <fx:define><ToggleGroup fx:id="tabs"/></fx:define>
+                    <ToggleButton fx:id="aboutTab" text="À propos" toggleGroup="$tabs" selected="true">
+                        <graphic><FontIcon iconLiteral="fth-user" iconSize="15" styleClass="icon"/></graphic>
+                    </ToggleButton>
+                    <ToggleButton fx:id="reviewsTab" toggleGroup="$tabs">
+                        <graphic><FontIcon iconLiteral="fth-star" iconSize="15" styleClass="icon"/></graphic>
+                    </ToggleButton>
+                </HBox>
+                <VBox fx:id="tabContent" spacing="12"/>
+            </VBox>
+
+            <VBox styleClass="card" spacing="12" HBox.hgrow="ALWAYS" prefWidth="340" minWidth="300">
+                <Label text="Informations" styleClass="section-title">
+                    <VBox.margin><Insets bottom="4"/></VBox.margin>
+                </Label>
+                <VBox fx:id="infoBox" spacing="10"/>
+            </VBox>
+        </HBox>
+    </VBox>
+</ScrollPane>
