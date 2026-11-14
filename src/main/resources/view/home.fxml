@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<!-- Accueil client. Contrôleur : ma.fixi.controller.HomeController -->
+<ScrollPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ma.fixi.controller.HomeController" fitToWidth="true" hbarPolicy="NEVER">
+    <VBox styleClass="page-content" spacing="28">
+
+        <!-- Recherche directe : l'action principale de l'accueil -->
+        <HBox styleClass="card-hero" spacing="12" alignment="BOTTOM_LEFT" style="-fx-padding: 0 20 0 28;">
+        <VBox spacing="16" HBox.hgrow="ALWAYS" alignment="CENTER_LEFT">
+            <padding><Insets top="24" bottom="24"/></padding>
+            <Label text="De quoi avez-vous besoin ?" styleClass="hero-title"/>
+            <HBox spacing="12" alignment="CENTER_LEFT">
+                <ComboBox fx:id="tradeCombo" promptText="Métier" HBox.hgrow="ALWAYS" maxWidth="Infinity" prefWidth="260"/>
+                <ComboBox fx:id="cityCombo" promptText="Ville" HBox.hgrow="ALWAYS" maxWidth="Infinity" prefWidth="220"/>
+                <Button text="Rechercher" styleClass="btn-primary" onAction="#onSearch" minWidth="140" prefHeight="44">
+                    <graphic><FontIcon iconLiteral="fth-search" iconSize="16" styleClass="icon"/></graphic>
+                </Button>
+            </HBox>
+            <HBox spacing="6" alignment="CENTER_LEFT">
+                <Label text="Vous préférez recevoir plusieurs devis ?" styleClass="text-muted"/>
+                <Hyperlink text="Publier une demande" styleClass="link" onAction="#onNewRequest" contentDisplay="RIGHT">
+                    <graphic><FontIcon iconLiteral="fth-arrow-right" iconSize="14" styleClass="icon"/></graphic>
+                </Hyperlink>
+            </HBox>
+        </VBox>
+        <ImageView fitHeight="196" preserveRatio="true" smooth="true" HBox.hgrow="NEVER">
+            <image><Image url="@../images/mascot.png"/></image>
+            <HBox.margin><Insets top="14"/></HBox.margin>
+        </ImageView>
+        </HBox>
+
+        <VBox spacing="14">
+            <HBox alignment="CENTER_LEFT">
+                <Label text="Métiers" styleClass="section-title"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Hyperlink text="Tous les artisans" styleClass="link" onAction="#onAllArtisans" contentDisplay="RIGHT">
+                    <graphic><FontIcon iconLiteral="fth-arrow-right" iconSize="14" styleClass="icon"/></graphic>
+                </Hyperlink>
+            </HBox>
+            <HBox fx:id="tradesPane" spacing="12"/>
+        </VBox>
+
+        <HBox spacing="24">
+            <VBox styleClass="card" spacing="14" HBox.hgrow="ALWAYS" prefWidth="560">
+                <HBox alignment="CENTER_LEFT">
+                    <Label text="Mes demandes en cours" styleClass="section-title"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Hyperlink text="Voir tout" styleClass="link" onAction="#onAllRequests"/>
+                </HBox>
+                <VBox fx:id="requestsBox" spacing="10"/>
+            </VBox>
+
+            <VBox styleClass="card" spacing="14" HBox.hgrow="ALWAYS" prefWidth="380" minWidth="330">
+                <HBox alignment="CENTER_LEFT">
+                    <Label text="Artisans les mieux notés" styleClass="section-title"/>
+                </HBox>
+                <VBox fx:id="artisansBox" spacing="10"/>
+            </VBox>
+        </HBox>
+    </VBox>
+</ScrollPane>

@@ -1,0 +1,1550 @@
+/* =====================================================================
+   Fixi — feuille de style unique
+   Couleurs et typographie tirées des maquettes (documents/ui).
+   Les variables sont déclarées sur .root et utilisées partout ailleurs.
+   ===================================================================== */
+
+.root {
+    /* Marque */
+    -fixi-primary: #5b25c9;
+    -fixi-primary-hover: #4b1ba9;
+    -fixi-primary-pressed: #3d158c;
+    -fixi-primary-soft: #efe8fd;
+    -fixi-primary-soft-2: #e3d8fb;
+    -fixi-sidebar: #2b1263;
+    -fixi-sidebar-active: #6a35e0;
+
+    /* Surfaces */
+    -fixi-bg: #f6f4fb;
+    -fixi-surface: #ffffff;
+    -fixi-surface-tint: #f8f5fe;
+    -fixi-border: #e7e1f3;
+    -fixi-border-strong: #d4cbe8;
+
+    /* Texte */
+    -fixi-text: #1b1430;
+    -fixi-text-muted: #5f5876;
+    -fixi-text-subtle: #8c86a1;
+
+    /* États */
+    -fixi-success: #15803d;
+    -fixi-success-bg: #dcfce7;
+    -fixi-warning: #a35208;
+    -fixi-warning-bg: #fef3c7;
+    -fixi-danger: #b42318;
+    -fixi-danger-bg: #fee4e2;
+    -fixi-info: #3538cd;
+    -fixi-info-bg: #e0e7ff;
+    -fixi-neutral: #4f4866;
+    -fixi-neutral-bg: #eeeaf5;
+    -fixi-star: #f2a516;
+
+    -fx-font-family: "Plus Jakarta Sans";
+    -fx-font-size: 14px;
+    -fx-text-fill: -fixi-text;
+    -fx-background-color: -fixi-bg;
+    -fx-focus-color: -fixi-primary;
+    -fx-faint-focus-color: transparent;
+    -fx-accent: -fixi-primary;
+}
+
+.app-root {
+    -fx-background-color: -fixi-bg;
+}
+
+/* ---------- Typographie ---------- */
+
+.label {
+    -fx-text-fill: -fixi-text;
+}
+
+.display {
+    -fx-font-family: "Plus Jakarta Sans ExtraBold";
+    -fx-font-size: 44px;
+}
+
+.h1 {
+    -fx-font-family: "Plus Jakarta Sans ExtraBold";
+    -fx-font-size: 26px;
+}
+
+.h2 {
+    -fx-font-family: "Plus Jakarta Sans";
+    -fx-font-weight: bold;
+    -fx-font-size: 19px;
+}
+
+.h3 {
+    -fx-font-family: "Plus Jakarta Sans";
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+}
+
+.semibold {
+    -fx-font-family: "Plus Jakarta Sans SemiBold";
+}
+
+.medium {
+    -fx-font-family: "Plus Jakarta Sans Medium";
+}
+
+.text-muted {
+    -fx-text-fill: -fixi-text-muted;
+}
+
+.text-subtle {
+    -fx-text-fill: -fixi-text-subtle;
+    -fx-font-size: 12.5px;
+}
+
+.text-small {
+    -fx-font-size: 12.5px;
+}
+
+.text-primary {
+    -fx-text-fill: -fixi-primary;
+}
+
+.text-danger {
+    -fx-text-fill: -fixi-danger;
+}
+
+.overline {
+    -fx-font-family: "Plus Jakarta Sans SemiBold";
+    -fx-font-size: 12px;
+    -fx-text-fill: -fixi-text-subtle;
+}
+
+/* ---------- Icônes ---------- */
+
+.icon {
+    -fx-icon-color: -fixi-text;
+}
+
+.icon-muted {
+    -fx-icon-color: -fixi-text-subtle;
+}
+
+.icon-primary {
+    -fx-icon-color: -fixi-primary;
+}
+
+.icon-star {
+    -fx-icon-color: -fixi-star;
+    -fx-fill: -fixi-star;
+}
+
+.icon-success {
+    -fx-icon-color: -fixi-success;
+}
+
+.icon-on-success {
+    -fx-icon-color: white;
+}
+
+.icon-white {
+    -fx-icon-color: white;
+}
+
+/* ---------- Boutons ---------- */
+
+.button {
+    -fx-font-family: "Plus Jakarta Sans SemiBold";
+    -fx-font-size: 14px;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-padding: 9px 16px;
+    -fx-cursor: hand;
+}
+
+.btn-primary {
+    -fx-background-color: -fixi-primary;
+    -fx-text-fill: white;
+}
+
+.btn-primary .icon {
+    -fx-icon-color: white;
+}
+
+.btn-primary:hover {
+    -fx-background-color: -fixi-primary-hover;
+}
+
+.btn-primary:pressed {
+    -fx-background-color: -fixi-primary-pressed;
+}
+
+.btn-primary:focused {
+    -fx-background-color: -fixi-primary-hover;
+    -fx-border-color: -fixi-primary-soft-2;
+    -fx-border-width: 3px;
+    -fx-border-insets: -3px;
+    -fx-border-radius: 13px;
+}
+
+.btn-large {
+    -fx-font-size: 15px;
+    -fx-padding: 13px 20px;
+    -fx-background-radius: 12px;
+    -fx-border-radius: 12px;
+}
+
+.btn-secondary {
+    -fx-background-color: -fixi-surface;
+    -fx-border-color: -fixi-primary;
+    -fx-border-width: 1.5px;
+    -fx-text-fill: -fixi-primary;
+}
+
+.btn-secondary .icon {
+    -fx-icon-color: -fixi-primary;
+}
+
+.btn-secondary:hover {
+    -fx-background-color: -fixi-primary-soft;
+}
+
+.btn-secondary:focused {
+    -fx-border-width: 2px;
+}
+
+.btn-ghost {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fixi-text-muted;
+    -fx-border-color: -fixi-border-strong;
+    -fx-border-width: 1px;
+}
+
+.btn-ghost .icon {
+    -fx-icon-color: -fixi-text-muted;
+}
+
+.btn-ghost:hover {
+    -fx-background-color: -fixi-surface-tint;
+    -fx-text-fill: -fixi-text;
+}
+
+.btn-danger {
+    -fx-background-color: -fixi-danger;
+    -fx-text-fill: white;
+}
+
+.btn-danger:hover {
+    -fx-background-color: derive(-fixi-danger, -12%);
+}
+
+.btn-danger-outline {
+    -fx-background-color: -fixi-surface;
+    -fx-border-color: #f3b8b2;
+    -fx-border-width: 1px;
+    -fx-text-fill: -fixi-danger;
+}
+
+.btn-danger-outline .icon {
+    -fx-icon-color: -fixi-danger;
+}
+
+.btn-danger-outline:hover {
+    -fx-background-color: -fixi-danger-bg;
+}
+
+.btn-small {
+    -fx-font-size: 13px;
+    -fx-padding: 6px 12px;
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+}
+
+.button:disabled {
+    -fx-opacity: 0.45;
+}
+
+.link {
+    -fx-background-color: transparent;
+    -fx-padding: 2px 0;
+    -fx-text-fill: -fixi-primary;
+    -fx-font-family: "Plus Jakarta Sans SemiBold";
+    -fx-border-width: 0;
+}
+
+.link .icon {
+    -fx-icon-color: -fixi-primary;
+}
+
+.link:hover {
+    -fx-underline: true;
+}
+
+.btn-icon {
+    -fx-background-color: -fixi-primary-soft;
+    -fx-padding: 9px;
+    -fx-background-radius: 10px;
+}
+
+.btn-icon .icon {
+    -fx-icon-color: -fixi-primary;
+}
+
+.btn-icon:hover {
+    -fx-background-color: -fixi-primary-soft-2;
+}
+
+.btn-icon-inline {
+    -fx-background-color: transparent;
+    -fx-padding: 6px 8px;
+}
+
+.btn-icon-inline:hover .icon {
+    -fx-icon-color: -fixi-primary;
+}
+
+/* ---------- Champs de saisie ---------- */
+
+.text-field, .password-field, .text-area, .combo-box, .date-picker {
+    -fx-font-size: 14px;
+}
+
+.text-field, .password-field {
+    -fx-background-color: -fixi-surface;
+    -fx-background-radius: 10px;
+    -fx-border-color: -fixi-border-strong;
+    -fx-border-radius: 10px;
+    -fx-border-width: 1px;
+    -fx-padding: 10px 14px;
+    -fx-text-fill: -fixi-text;
+    -fx-prompt-text-fill: -fixi-text-subtle;
+    -fx-highlight-fill: -fixi-primary-soft-2;
+    -fx-highlight-text-fill: -fixi-text;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: -fixi-primary;
+    -fx-border-width: 1.5px;
+    -fx-background-color: -fixi-surface;
+}
+
+.text-field.invalid, .password-field.invalid, .text-area.invalid, .combo-box.invalid, .date-picker.invalid {
+    -fx-border-color: -fixi-danger;
+}
+
+.field-with-icon {
+    -fx-padding: 10px 14px 10px 42px;
+}
+
+.field-with-trailing {
+    -fx-padding: 10px 44px 10px 42px;
+}
+
+.text-area {
+    -fx-background-color: -fixi-surface;
+    -fx-background-radius: 10px;
+    -fx-border-color: -fixi-border-strong;
+    -fx-border-radius: 10px;
+    -fx-padding: 4px;
+    -fx-prompt-text-fill: -fixi-text-subtle;
+    -fx-highlight-fill: -fixi-primary-soft-2;
+    -fx-highlight-text-fill: -fixi-text;
+}
+
+.text-area:focused {
+    -fx-border-color: -fixi-primary;
+    -fx-border-width: 1.5px;
+}
+
+.text-area .content {
+    -fx-background-color: transparent;
+    -fx-padding: 6px 8px;
+}
+
+.text-area .scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.combo-box, .date-picker {
+    -fx-background-color: -fixi-surface;
+    -fx-background-radius: 10px;
+    -fx-border-color: -fixi-border-strong;
+    -fx-border-radius: 10px;
+    -fx-padding: 1px 4px;
+}
+
+.combo-box:focused, .date-picker:focused {
+    -fx-border-color: -fixi-primary;
+    -fx-border-width: 1.5px;
+}
+
+.combo-box .list-cell {
+    -fx-padding: 8px 8px;
+    -fx-text-fill: -fixi-text;
+    -fx-background-color: transparent;
+}
+
+.combo-box .arrow-button, .date-picker .arrow-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0 10px 0 6px;
+}
+
+.combo-box .arrow, .date-picker .arrow {
+    -fx-background-color: -fixi-text-muted;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: -fixi-surface;
+    -fx-background-radius: 10px;
+    -fx-border-color: -fixi-border;
+    -fx-border-radius: 10px;
+    -fx-padding: 4px;
+    -fx-effect: dropshadow(gaussian, rgba(43, 18, 99, 0.14), 18, 0, 0, 6);
+}
+
+.combo-box-popup .list-view .list-cell {
+    -fx-padding: 8px 12px;
+    -fx-background-radius: 7px;
+    -fx-text-fill: -fixi-text;
+    -fx-background-color: transparent;
+}
+
+.combo-box-popup .list-view .list-cell:hover {
+    -fx-background-color: -fixi-primary-soft;
+}
+
+.combo-box-popup .list-view .list-cell:selected {
+    -fx-background-color: -fixi-primary-soft-2;
+    -fx-text-fill: -fixi-text;
+}
+
+.date-picker > .text-field {
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+    -fx-padding: 9px 10px;
+}
+
+.date-picker-popup {
+    -fx-background-color: -fixi-surface;
+    -fx-background-radius: 10px;
+    -fx-border-color: -fixi-border;
+    -fx-border-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(43, 18, 99, 0.14), 18, 0, 0, 6);
+}
+
+.date-picker-popup .month-year-pane {
+    -fx-background-color: transparent;
+}
+
+.date-picker-popup .date-cell:hover, .date-picker-popup .selected {
+    -fx-background-color: -fixi-primary;
+    -fx-text-fill: white;
+}
+
+.date-picker-popup .today {
+    -fx-border-color: -fixi-primary;
+}
+
+.check-box {
+    -fx-text-fill: -fixi-text;
+    -fx-label-padding: 0 0 0 8px;
+    -fx-cursor: hand;
+}
+
+.check-box > .box {
+    -fx-background-color: -fixi-surface;
+    -fx-border-color: -fixi-border-strong;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 3px;
+}
+
+.check-box:selected > .box {
+    -fx-background-color: -fixi-primary;
+    -fx-border-color: -fixi-primary;
+}
+
+.check-box:selected > .box > .mark {
+    -fx-background-color: white;
+}
+
+.check-box:focused > .box {
+    -fx-border-color: -fixi-primary;
+    -fx-border-width: 1.5px;
+}
+
+.form-label {
+    -fx-font-family: "Plus Jakarta Sans SemiBold";
+    -fx-font-size: 13.5px;
+    -fx-text-fill: -fixi-text;
+}
+
+.form-hint {
+    -fx-font-size: 12.5px;
+    -fx-text-fill: -fixi-text-subtle;
+}
+
+.field-error {
+    -fx-font-size: 12.5px;
+    -fx-text-fill: -fixi-danger;
+}
+
+.form-alert {
+    -fx-background-color: -fixi-danger-bg;
+    -fx-background-radius: 10px;
+    -fx-padding: 10px 14px;
+    -fx-text-fill: -fixi-danger;
+    -fx-font-family: "Plus Jakarta Sans Medium";
+}
+
+.form-alert .label {
+    -fx-text-fill: -fixi-danger;
+    -fx-font-family: "Plus Jakarta Sans Medium";
+}
+
+.form-alert .icon {
+    -fx-icon-color: -fixi-danger;
+}
+
+/* Boutons à bascule (choix du type de compte, filtres) */
+
+.segmented {
+    -fx-background-color: -fixi-surface-tint;
+    -fx-background-radius: 11px;
+    -fx-border-color: -fixi-border;
+    -fx-border-radius: 11px;
+    -fx-padding: 4px;
+    -fx-spacing: 4px;
+}
+
+.segmented .toggle-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fixi-text-muted;
+    -fx-font-family: "Plus Jakarta Sans SemiBold";
+    -fx-font-size: 13.5px;
+    -fx-padding: 8px 12px;
+    -fx-background-radius: 8px;
+    -fx-cursor: hand;
+}
+
+.segmented .toggle-button:hover {
+    -fx-text-fill: -fixi-text;
+}
+
+.segmented .toggle-button:selected {
+    -fx-background-color: -fixi-surface;
+    -fx-text-fill: -fixi-primary;
+    -fx-effect: dropshadow(gaussian, rgba(43, 18, 99, 0.12), 6, 0, 0, 1);
+}
+
+.segmented .toggle-button .icon {
+    -fx-icon-color: -fixi-text-subtle;
+}
+
+.segmented .toggle-button:selected .icon {
+    -fx-icon-color: -fixi-primary;
+}
+
+.filter-chip {
+    -fx-background-color: -fixi-surface;
+    -fx-border-color: -fixi-border-strong;
+    -fx-border-radius: 999px;
+    -fx-background-radius: 999px;
+    -fx-text-fill: -fixi-text-muted;
+    -fx-font-family: "Plus Jakarta Sans SemiBold";
+    -fx-font-size: 13px;
+    -fx-padding: 6px 14px;
+    -fx-cursor: hand;
+}
+
+.filter-chip:hover {
+    -fx-border-color: -fixi-primary;
+}
+
+.filter-chip:selected {
+    -fx-background-color: -fixi-primary;
+    -fx-border-color: -fixi-primary;
+    -fx-text-fill: white;
+}
+
+/* ---------- Défilement ---------- */
+
+.scroll-pane, .scroll-pane > .viewport {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+.scroll-bar {
+    -fx-background-color: transparent;
+    -fx-padding: 2px;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: rgba(43, 18, 99, 0.18);
+    -fx-background-radius: 999px;
+}
+
+.scroll-bar .thumb:hover {
+    -fx-background-color: rgba(43, 18, 99, 0.3);
+}
+
+.scroll-bar .increment-button, .scroll-bar .decrement-button {
+    -fx-padding: 0;
+    -fx-pref-width: 0;
+    -fx-pref-height: 0;
+}
+
+.scroll-bar .increment-arrow, .scroll-bar .decrement-arrow {
+    -fx-shape: " ";
+    -fx-padding: 0;
+}
+
+.scroll-bar:vertical {
+    -fx-pref-width: 10px;
+}
+
+.scroll-bar:horizontal {
+    -fx-pref-height: 10px;
+}
+
+/* ---------- Cartes ---------- */
+
+.card {
+    -fx-background-color: -fixi-surface;
+    -fx-background-radius: 16px;
+    -fx-border-color: -fixi-border;
+    -fx-border-radius: 16px;
+    -fx-padding: 20px;
+}
+
+.card-tint {
+    -fx-background-color: -fixi-surface-tint;
+    -fx-background-radius: 14px;
+    -fx-border-color: -fixi-border;
+    -fx-border-radius: 14px;
+    -fx-padding: 14px 16px;
+}
+
+.card-hero {
+    -fx-background-color: linear-gradient(to right, #efe7fe 0%, #f7f3ff 70%, #fbf9ff 100%);
+    -fx-background-radius: 18px;
+    -fx-border-color: -fixi-primary-soft-2;
+    -fx-border-radius: 18px;
+    -fx-padding: 24px 28px;
+}
+
+.card-clickable {
+    -fx-cursor: hand;
+}
+
+.card-clickable:hover {
+    -fx-border-color: -fixi-primary-soft-2;
+    -fx-background-color: -fixi-surface-tint;
+}
+
+.card-selected, .card-selected:hover {
+    -fx-border-color: -fixi-primary;
+    -fx-border-width: 1.5px;
+    -fx-background-color: -fixi-surface-tint;
+}
+
+.divider {
+    -fx-background-color: -fixi-border;
+    -fx-min-height: 1px;
+    -fx-pref-height: 1px;
+    -fx-max-height: 1px;
+}
+
+.divider-vertical {
+    -fx-background-color: -fixi-border;
+    -fx-min-width: 1px;
+    -fx-pref-width: 1px;
+    -fx-max-width: 1px;
+}
+
+.section-title {
+    -fx-font-family: "Plus Jakarta Sans";
+    -fx-font-weight: bold;
+    -fx-font-size: 18px;
+}
+
+/* ---------- Tuiles d'icônes, avatars, badges ---------- */
+
+.icon-tile {
+    -fx-background-radius: 12px;
+}
+
+.tile-lilac {
+    -fx-background-color: -fixi-primary-soft;
+}
+
+.tile-lilac .icon {
+    -fx-icon-color: -fixi-primary;
+}
+
+.tile-primary {
+    -fx-background-color: -fixi-primary;
+}
+
+.tile-primary .icon {
+    -fx-icon-color: white;
+}
+
+.tile-blue {
+    -fx-background-color: #e5ecff;
+}
+
+.tile-blue .icon {
+    -fx-icon-color: #3b5bdb;
+}
+
+.tile-green {
+    -fx-background-color: #ddf7e6;
+}
+
+.tile-green .icon {
+    -fx-icon-color: -fixi-success;
+}
+
+.tile-amber {
+    -fx-background-color: #fff1d6;
+}
+
+.tile-amber .icon {
+    -fx-icon-color: #c26a00;
+}
+
+.tile-white {
+    -fx-background-color: white;
+}
+
+.tile-white .icon {
+    -fx-icon-color: -fixi-primary;
+}
+
+.avatar-circle {
+    -fx-fill: #e9e0fc;
+}
+
+.avatar-tone-1 { -fx-fill: #e9e0fc; }
+.avatar-tone-2 { -fx-fill: #dfe8ff; }
+.avatar-tone-3 { -fx-fill: #fde7d6; }
+.avatar-tone-4 { -fx-fill: #daf3e6; }
+.avatar-tone-5 { -fx-fill: #fbe0ec; }
+
+.avatar-initials {
+    -fx-font-family: "Plus Jakarta Sans";
+    -fx-font-weight: bold;
+    -fx-text-fill: #3b1a8c;
+}
+
+.avatar-verified {
+    -fx-background-color: #16a34a;
+    -fx-background-radius: 999px;
+    -fx-border-color: white;
+    -fx-border-width: 2px;
+    -fx-border-radius: 999px;
+}
+
+.badge {
+    -fx-font-family: "Plus Jakarta Sans SemiBold";
+    -fx-font-size: 12.5px;
+    -fx-padding: 4px 10px;
+    -fx-background-radius: 999px;
+}
+
+.badge-neutral { -fx-background-color: -fixi-neutral-bg; -fx-text-fill: -fixi-neutral; }
+.badge-info    { -fx-background-color: -fixi-info-bg;    -fx-text-fill: -fixi-info; }
+.badge-warning { -fx-background-color: -fixi-warning-bg; -fx-text-fill: -fixi-warning; }
+.badge-success { -fx-background-color: -fixi-success-bg; -fx-text-fill: -fixi-success; }
+.badge-danger  { -fx-background-color: -fixi-danger-bg;  -fx-text-fill: -fixi-danger; }
+.badge-primary { -fx-background-color: -fixi-primary-soft; -fx-text-fill: -fixi-primary; }
+
+.badge-count {
+    -fx-background-color: -fixi-primary;
+    -fx-text-fill: white;
+    -fx-font-family: "Plus Jakarta Sans";
+    -fx-font-weight: bold;
+    -fx-font-size: 11.5px;
+    -fx-padding: 2px 7px;
+    -fx-background-radius: 999px;
+}
+
+.rating-value {
+    -fx-font-family: "Plus Jakarta Sans";
+    -fx-font-weight: bold;
+}
+
+.trade-label {
+    -fx-text-fill: -fixi-primary;
+    -fx-font-family: "Plus Jakarta Sans SemiBold";
+}
+
+/* ---------- Écrans d'authentification ---------- */
+
+.auth-brand {
+    -fx-background-color: linear-gradient(to bottom right, #ede4ff 0%, #f6f1ff 55%, #e6dafd 100%);
+    -fx-background-radius: 24px;
+}
+
+.auth-brand-name {
+    -fx-font-family: "Plus Jakarta Sans ExtraBold";
+    -fx-font-size: 64px;
+    -fx-text-fill: #1d0b4a;
+}
+
+.auth-brand-headline {
+    -fx-font-family: "Plus Jakarta Sans";
+    -fx-font-weight: bold;
+    -fx-font-size: 28px;
+    -fx-text-fill: #1d0b4a;
+    -fx-line-spacing: 2px;
+}
+
+.auth-brand-lead {
+    -fx-font-size: 16px;
+    -fx-text-fill: -fixi-text-muted;
+    -fx-line-spacing: 3px;
+}
+
+.auth-feature-title {
+    -fx-font-family: "Plus Jakarta Sans";
+    -fx-font-weight: bold;
+    -fx-font-size: 15.5px;
+}
+
+.auth-form-title {
+    -fx-font-family: "Plus Jakarta Sans ExtraBold";
+    -fx-font-size: 32px;
+}
+
+.auth-card {
+    -fx-background-color: -fixi-surface;
+    -fx-background-radius: 22px;
+    -fx-border-color: -fixi-border;
+    -fx-border-radius: 22px;
+    -fx-padding: 36px 40px;
+    -fx-effect: dropshadow(gaussian, rgba(43, 18, 99, 0.07), 30, 0, 0, 10);
+}
+
+.logo-mark {
+    -fx-background-color: -fixi-primary;
+    -fx-background-radius: 12px;
+}
+
+.logo-mark .icon {
+    -fx-icon-color: white;
+}
+
+.logo-text {
+    -fx-font-family: "Plus Jakarta Sans ExtraBold";
+    -fx-font-size: 26px;
+    -fx-text-fill: #1d0b4a;
+}
+
+.logo-tagline {
+    -fx-font-family: "Plus Jakarta Sans SemiBold";
+    -fx-font-size: 12.5px;
+    -fx-text-fill: -fixi-primary;
+}
+
+.or-divider .label {
+    -fx-text-fill: -fixi-text-muted;
+}
+
+.demo-box {
+    -fx-background-color: -fixi-surface-tint;
+    -fx-background-radius: 12px;
+    -fx-border-color: -fixi-border;
+    -fx-border-style: segments(5, 4);
+    -fx-border-radius: 12px;
+    -fx-padding: 12px 14px;
+}
+
+.demo-account {
+    -fx-background-color: -fixi-surface;
+    -fx-border-color: -fixi-border-strong;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-text-fill: -fixi-text;
+    -fx-font-family: "Plus Jakarta Sans SemiBold";
+    -fx-font-size: 12.5px;
+    -fx-padding: 5px 10px;
+    -fx-cursor: hand;
+}
+
+.demo-account:hover {
+    -fx-border-color: -fixi-primary;
+    -fx-text-fill: -fixi-primary;
+}
+
+/* ---------- Coque : menu latéral et barre du haut ---------- */
+
+.sidebar {
+    -fx-background-color: -fixi-sidebar;
+    -fx-padding: 28px 16px 22px 16px;
+    -fx-pref-width: 236px;
+    -fx-min-width: 236px;
+}
+
+.sidebar-logo .logo-text {
+    -fx-text-fill: white;
+    -fx-font-size: 24px;
+}
+
+.sidebar-logo .logo-tagline {
+    -fx-text-fill: #c9b8f5;
+}
+
+.sidebar-logo .logo-mark {
+    -fx-background-color: white;
+}
+
+.sidebar-logo .logo-mark .icon {
+    -fx-icon-color: -fixi-sidebar;
+}
+
+.nav-item {
+    -fx-background-color: transparent;
+    -fx-text-fill: #ddd3fa;
+    -fx-font-family: "Plus Jakarta Sans Medium";
+    -fx-font-size: 14.5px;
+    -fx-padding: 11px 14px;
+    -fx-background-radius: 11px;
+    -fx-alignment: center-left;
+    -fx-graphic-text-gap: 14px;
+}
+
+.nav-item .icon {
+    -fx-icon-color: #c9b8f5;
+}
+
+.nav-item:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.08);
+    -fx-text-fill: white;
+}
+
+.nav-item.active {
+    -fx-background-color: -fixi-sidebar-active;
+    -fx-text-fill: white;
+    -fx-font-family: "Plus Jakarta Sans SemiBold";
+}
+
+.nav-item.active .icon {
+    -fx-icon-color: white;
+}
+
+.nav-item:focused {
+    -fx-border-color: rgba(255, 255, 255, 0.5);
+    -fx-border-radius: 11px;
+}
+
+.sidebar-role {
+    -fx-text-fill: #a996e6;
+    -fx-font-family: "Plus Jakarta Sans SemiBold";
+    -fx-font-size: 11.5px;
+    -fx-padding: 0 0 0 14px;
+}
+
+.btn-logout {
+    -fx-background-color: transparent;
+    -fx-border-color: rgba(255, 255, 255, 0.35);
+    -fx-border-radius: 11px;
+    -fx-background-radius: 11px;
+    -fx-text-fill: white;
+    -fx-font-family: "Plus Jakarta Sans Medium";
+    -fx-padding: 10px 14px;
+    -fx-graphic-text-gap: 12px;
+}
+
+.btn-logout .icon {
+    -fx-icon-color: white;
+}
+
+.btn-logout:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.08);
+}
+
+.topbar {
+    -fx-padding: 26px 32px 18px 32px;
+}
+
+.page-title {
+    -fx-font-family: "Plus Jakarta Sans ExtraBold";
+    -fx-font-size: 28px;
+    -fx-text-fill: #1d0b4a;
+}
+
+.page-subtitle {
+    -fx-font-size: 15px;
+    -fx-text-fill: -fixi-text-muted;
+}
+
+.search-pill {
+    -fx-background-radius: 999px;
+    -fx-border-radius: 999px;
+    -fx-pref-width: 300px;
+}
+
+.user-menu {
+    -fx-background-color: transparent;
+    -fx-padding: 4px 6px;
+    -fx-background-radius: 999px;
+    -fx-cursor: hand;
+}
+
+.user-menu:hover, .user-menu:showing {
+    -fx-background-color: -fixi-primary-soft;
+}
+
+.user-menu > .arrow-button {
+    -fx-padding: 0 4px 0 8px;
+}
+
+.user-menu > .arrow-button > .arrow {
+    -fx-background-color: -fixi-text-muted;
+}
+
+.context-menu {
+    -fx-background-color: -fixi-surface;
+    -fx-background-radius: 12px;
+    -fx-border-color: -fixi-border;
+    -fx-border-radius: 12px;
+    -fx-padding: 6px;
+    -fx-effect: dropshadow(gaussian, rgba(43, 18, 99, 0.14), 18, 0, 0, 6);
+}
+
+.menu-item {
+    -fx-padding: 8px 14px;
+    -fx-background-radius: 8px;
+}
+
+.menu-item .label {
+    -fx-text-fill: -fixi-text;
+}
+
+.menu-item:focused {
+    -fx-background-color: -fixi-primary-soft;
+}
+
+.page-content {
+    -fx-padding: 4px 32px 32px 32px;
+}
+
+/* ---------- Accueil client ---------- */
+
+.hero-title {
+    -fx-font-family: "Plus Jakarta Sans ExtraBold";
+    -fx-font-size: 24px;
+    -fx-text-fill: #1d0b4a;
+}
+
+.service-tile {
+    -fx-background-color: -fixi-surface;
+    -fx-background-radius: 14px;
+    -fx-border-color: -fixi-border;
+    -fx-border-radius: 14px;
+    -fx-padding: 16px 10px 14px 10px;
+    -fx-cursor: hand;
+}
+
+.service-tile:hover {
+    -fx-border-color: -fixi-primary;
+    -fx-background-color: -fixi-surface-tint;
+}
+
+.service-tile .label {
+    -fx-font-family: "Plus Jakarta Sans SemiBold";
+    -fx-font-size: 13.5px;
+}
+
+/* ---------- Recherche ---------- */
+
+.result-count {
+    -fx-font-family: "Plus Jakarta Sans";
+    -fx-font-weight: bold;
+    -fx-font-size: 19px;
+}
+
+.artisan-name {
+    -fx-font-family: "Plus Jakarta Sans";
+    -fx-font-weight: bold;
+    -fx-font-size: 17px;
+}
+
+.star-button {
+    -fx-background-color: transparent;
+    -fx-padding: 2px;
+    -fx-cursor: hand;
+}
+
+.star-button .icon {
+    -fx-icon-color: #d6cfe6;
+}
+
+.star-button.on .icon {
+    -fx-icon-color: -fixi-star;
+}
+
+/* ---------- Profil artisan ---------- */
+
+.profile-name {
+    -fx-font-family: "Plus Jakarta Sans ExtraBold";
+    -fx-font-size: 28px;
+    -fx-text-fill: #1d0b4a;
+}
+
+.info-row-title {
+    -fx-font-family: "Plus Jakarta Sans";
+    -fx-font-weight: bold;
+    -fx-text-fill: -fixi-primary;
+}
+
+.tab-switch .toggle-button {
+    -fx-pref-width: 200px;
+}
+
+.review-card {
+    -fx-background-color: -fixi-surface-tint;
+    -fx-background-radius: 12px;
+    -fx-padding: 14px 16px;
+}
+
+.availability-chip {
+    -fx-background-color: -fixi-success-bg;
+    -fx-text-fill: -fixi-success;
+    -fx-background-radius: 999px;
+    -fx-padding: 5px 12px;
+    -fx-font-family: "Plus Jakarta Sans SemiBold";
+}
+
+/* ---------- Demandes ---------- */
+
+.request-row {
+    -fx-background-color: -fixi-surface;
+    -fx-background-radius: 14px;
+    -fx-border-color: -fixi-border;
+    -fx-border-radius: 14px;
+    -fx-padding: 14px 14px;
+    -fx-cursor: hand;
+}
+
+.request-row:hover {
+    -fx-border-color: -fixi-primary-soft-2;
+    -fx-background-color: -fixi-surface-tint;
+}
+
+.request-row.selected {
+    -fx-border-color: -fixi-primary;
+    -fx-border-width: 1.5px;
+    -fx-background-color: -fixi-surface-tint;
+}
+
+.request-title {
+    -fx-font-family: "Plus Jakarta Sans";
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+}
+
+.detail-title {
+    -fx-font-family: "Plus Jakarta Sans ExtraBold";
+    -fx-font-size: 24px;
+    -fx-text-fill: #1d0b4a;
+}
+
+.kv-key {
+    -fx-text-fill: -fixi-text-muted;
+}
+
+.kv-value {
+    -fx-font-family: "Plus Jakarta Sans";
+    -fx-font-weight: bold;
+}
+
+.amount-large {
+    -fx-font-family: "Plus Jakarta Sans ExtraBold";
+    -fx-font-size: 24px;
+}
+
+.callout {
+    -fx-background-color: -fixi-warning-bg;
+    -fx-background-radius: 12px;
+    -fx-padding: 12px 16px;
+}
+
+.callout .label {
+    -fx-text-fill: #7a3e06;
+}
+
+.callout .icon {
+    -fx-icon-color: #a35208;
+}
+
+.callout-info {
+    -fx-background-color: -fixi-primary-soft;
+}
+
+.callout-info .label {
+    -fx-text-fill: #3b1a8c;
+}
+
+.callout-info .icon {
+    -fx-icon-color: -fixi-primary;
+}
+
+/* Frise de suivi */
+
+.timeline-dot {
+    -fx-background-color: -fixi-surface;
+    -fx-border-color: -fixi-border-strong;
+    -fx-border-width: 2px;
+    -fx-background-radius: 999px;
+    -fx-border-radius: 999px;
+}
+
+.timeline-dot.done {
+    -fx-background-color: -fixi-primary;
+    -fx-border-color: -fixi-primary;
+}
+
+.timeline-dot.done .icon {
+    -fx-icon-color: white;
+}
+
+.timeline-dot.current {
+    -fx-border-color: -fixi-primary;
+    -fx-border-width: 3px;
+}
+
+.timeline-dot.current .inner {
+    -fx-background-color: -fixi-primary;
+    -fx-background-radius: 999px;
+}
+
+.timeline-line {
+    -fx-background-color: -fixi-border-strong;
+    -fx-min-height: 3px;
+    -fx-max-height: 3px;
+    -fx-background-radius: 2px;
+}
+
+.timeline-line.done {
+    -fx-background-color: -fixi-primary;
+}
+
+.timeline-label {
+    -fx-font-size: 12.5px;
+    -fx-text-fill: -fixi-text-muted;
+    -fx-text-alignment: center;
+}
+
+.timeline-label.done {
+    -fx-text-fill: -fixi-text;
+}
+
+.timeline-label.current {
+    -fx-text-fill: -fixi-primary;
+    -fx-font-family: "Plus Jakarta Sans";
+    -fx-font-weight: bold;
+}
+
+/* Photos jointes */
+
+.photo-drop {
+    -fx-background-color: -fixi-surface-tint;
+    -fx-background-radius: 12px;
+    -fx-border-color: -fixi-border-strong;
+    -fx-border-style: segments(6, 5);
+    -fx-border-radius: 12px;
+    -fx-border-width: 1.5px;
+    -fx-padding: 14px 16px;
+}
+
+.photo-thumb {
+    -fx-background-color: -fixi-surface;
+    -fx-background-radius: 10px;
+    -fx-border-color: -fixi-border;
+    -fx-border-radius: 10px;
+}
+
+.photo-remove {
+    -fx-background-color: -fixi-primary;
+    -fx-background-radius: 999px;
+    -fx-padding: 3px;
+    -fx-cursor: hand;
+}
+
+.photo-remove .icon {
+    -fx-icon-color: white;
+}
+
+.step-number {
+    -fx-background-color: -fixi-primary;
+    -fx-background-radius: 999px;
+    -fx-text-fill: white;
+    -fx-font-family: "Plus Jakarta Sans";
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-alignment: center;
+}
+
+/* ---------- Messagerie ---------- */
+
+.conversation-row {
+    -fx-background-color: transparent;
+    -fx-background-radius: 12px;
+    -fx-padding: 12px 12px;
+    -fx-cursor: hand;
+}
+
+.conversation-row:hover {
+    -fx-background-color: -fixi-surface-tint;
+}
+
+.conversation-row.selected {
+    -fx-background-color: -fixi-primary-soft;
+}
+
+.conversation-name {
+    -fx-font-family: "Plus Jakarta Sans";
+    -fx-font-weight: bold;
+    -fx-font-size: 14.5px;
+}
+
+.conversation-preview {
+    -fx-text-fill: -fixi-text-muted;
+    -fx-font-size: 13px;
+}
+
+.conversation-preview.unread {
+    -fx-text-fill: -fixi-text;
+    -fx-font-family: "Plus Jakarta Sans SemiBold";
+}
+
+.chat-area {
+    -fx-background-color: -fixi-surface;
+}
+
+.bubble {
+    -fx-padding: 10px 14px;
+    -fx-background-radius: 16px 16px 16px 4px;
+    -fx-background-color: -fixi-primary-soft;
+}
+
+.bubble .label {
+    -fx-text-fill: -fixi-text;
+}
+
+.bubble.mine {
+    -fx-background-radius: 16px 16px 4px 16px;
+    -fx-background-color: -fixi-primary;
+}
+
+.bubble.mine .label {
+    -fx-text-fill: white;
+}
+
+.bubble.mine .icon {
+    -fx-icon-color: white;
+}
+
+.bubble .bubble-time {
+    -fx-font-size: 11.5px;
+    -fx-text-fill: -fixi-text-subtle;
+}
+
+.bubble.mine .bubble-time {
+    -fx-text-fill: #d8c9fb;
+}
+
+.attachment {
+    -fx-background-color: rgba(255, 255, 255, 0.75);
+    -fx-background-radius: 10px;
+    -fx-padding: 8px 12px;
+}
+
+.bubble.mine .attachment {
+    -fx-background-color: rgba(255, 255, 255, 0.15);
+}
+
+.day-separator {
+    -fx-background-color: -fixi-neutral-bg;
+    -fx-background-radius: 999px;
+    -fx-padding: 4px 12px;
+    -fx-font-size: 12.5px;
+    -fx-text-fill: -fixi-text-muted;
+}
+
+.composer {
+    -fx-padding: 14px 18px;
+    -fx-border-color: -fixi-border transparent transparent transparent;
+}
+
+/* ---------- Espace artisan ---------- */
+
+.stat-value {
+    -fx-font-family: "Plus Jakarta Sans ExtraBold";
+    -fx-font-size: 24px;
+}
+
+.date-tile {
+    -fx-background-color: -fixi-primary-soft;
+    -fx-background-radius: 10px;
+    -fx-padding: 6px 4px;
+    -fx-min-width: 52px;
+    -fx-alignment: center;
+}
+
+.date-tile-day {
+    -fx-font-family: "Plus Jakarta Sans ExtraBold";
+    -fx-font-size: 18px;
+    -fx-text-fill: -fixi-primary;
+}
+
+.date-tile-month {
+    -fx-font-size: 11.5px;
+    -fx-text-fill: -fixi-primary;
+    -fx-font-family: "Plus Jakarta Sans SemiBold";
+}
+
+.time-chip {
+    -fx-background-color: -fixi-surface-tint;
+    -fx-border-color: -fixi-border;
+    -fx-background-radius: 999px;
+    -fx-border-radius: 999px;
+    -fx-padding: 5px 12px;
+    -fx-font-family: "Plus Jakarta Sans SemiBold";
+    -fx-graphic-text-gap: 6px;
+}
+
+/* ---------- Tableau (administration) ---------- */
+
+.table-view {
+    -fx-background-color: -fixi-surface;
+    -fx-background-radius: 14px;
+    -fx-border-color: -fixi-border;
+    -fx-border-radius: 14px;
+    -fx-padding: 4px;
+    -fx-table-cell-border-color: transparent;
+}
+
+.table-view:focused {
+    -fx-background-color: -fixi-surface;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: transparent;
+    -fx-background-radius: 14px 14px 0 0;
+    -fx-border-color: transparent transparent -fixi-border transparent;
+}
+
+.table-view .column-header, .table-view .filler {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 10px 6px;
+}
+
+.table-view .column-header .label {
+    -fx-font-family: "Plus Jakarta Sans SemiBold";
+    -fx-font-size: 12.5px;
+    -fx-text-fill: -fixi-text-subtle;
+    -fx-alignment: center-left;
+}
+
+.table-row-cell {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent -fixi-border transparent;
+    -fx-cell-size: 46px;
+}
+
+.table-row-cell:empty, .table-row-cell:empty:hover {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: -fixi-surface-tint;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: -fixi-primary-soft;
+}
+
+.table-row-cell .table-cell {
+    -fx-text-fill: -fixi-text;
+    -fx-padding: 0 10px;
+    -fx-alignment: center-left;
+}
+
+.table-row-cell:selected .table-cell {
+    -fx-text-fill: -fixi-text;
+}
+
+.table-view .placeholder .label {
+    -fx-text-fill: -fixi-text-muted;
+}
+
+.rtl-field {
+    -fx-font-size: 15px;
+}
+
+/* ---------- Toasts et dialogues ---------- */
+
+.toast {
+    -fx-background-radius: 12px;
+    -fx-padding: 12px 18px;
+    -fx-font-family: "Plus Jakarta Sans SemiBold";
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(27, 20, 48, 0.25), 20, 0, 0, 6);
+}
+
+.toast .icon {
+    -fx-icon-color: white;
+}
+
+.toast-success {
+    -fx-background-color: #1b1430;
+}
+
+.toast-success .icon {
+    -fx-icon-color: #6ee7a0;
+}
+
+.toast-info {
+    -fx-background-color: #1b1430;
+}
+
+.toast-error {
+    -fx-background-color: -fixi-danger;
+}
+
+.dialog-overlay {
+    -fx-background-color: rgba(27, 20, 48, 0.42);
+}
+
+.dialog-card {
+    -fx-background-color: -fixi-surface;
+    -fx-background-radius: 18px;
+    -fx-padding: 26px 28px 22px 28px;
+    -fx-effect: dropshadow(gaussian, rgba(27, 20, 48, 0.3), 40, 0, 0, 12);
+}
+
+.dialog-title {
+    -fx-font-family: "Plus Jakarta Sans";
+    -fx-font-weight: bold;
+    -fx-font-size: 19px;
+}
+
+.empty-state {
+    -fx-padding: 36px 20px;
+}
+
+.empty-title {
+    -fx-font-family: "Plus Jakarta Sans";
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+}
+
+.tooltip {
+    -fx-background-color: #1b1430;
+    -fx-text-fill: white;
+    -fx-font-size: 12.5px;
+    -fx-background-radius: 8px;
+    -fx-padding: 6px 10px;
+}

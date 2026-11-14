@@ -582,9 +582,11 @@ mvn clean package
 
 ### 15.5. Lancer l'application
 
-La commande exacte dépendra de la configuration JavaFX et du point d'entrée déclarés dans le `pom.xml`.
+```bash
+mvn javafx:run
+```
 
-Une fois cette configuration mise en place, la commande de lancement sera documentée ici.
+L'interface fonctionne d'abord avec des données fictives (comptes de démonstration proposés sur l'écran de connexion, mot de passe `fixi1234`). Le branchement sur MySQL est décrit pas à pas dans [docs/INTEGRATION_BACKEND.md](docs/INTEGRATION_BACKEND.md).
 
 **Important :** ces commandes constituent le parcours Maven prévu. Elles ne garantissent pas un lancement immédiat tant que le projet, ses dépendances, sa configuration JavaFX et sa base de données n'ont pas été implémentés.
 
