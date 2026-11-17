@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<!-- Recherche d'artisans. Les filtres s'appliquent immédiatement, sans bouton « Appliquer ».
+     Contrôleur : ma.fixi.controller.SearchController -->
+<HBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="ma.fixi.controller.SearchController" styleClass="page-content" spacing="24">
+
+    <VBox styleClass="card" spacing="10" minWidth="270" maxWidth="270" maxHeight="-Infinity">
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <FontIcon iconLiteral="fth-sliders" iconSize="17" styleClass="icon"/>
+            <Label text="Filtres" styleClass="h3"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Hyperlink fx:id="resetLink" text="Réinitialiser" styleClass="link" onAction="#onReset"/>
+        </HBox>
+
+        <Label text="Métier" styleClass="form-label">
+            <VBox.margin><Insets top="10"/></VBox.margin>
+        </Label>
+        <ComboBox fx:id="tradeCombo" maxWidth="Infinity"/>
+
+        <Label text="Ville" styleClass="form-label">
+            <VBox.margin><Insets top="8"/></VBox.margin>
+        </Label>
+        <ComboBox fx:id="cityCombo" maxWidth="Infinity"/>
+
+        <Label text="Note minimale" styleClass="form-label">
+            <VBox.margin><Insets top="8"/></VBox.margin>
+        </Label>
+        <HBox fx:id="starsBox" spacing="2" alignment="CENTER_LEFT">
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label fx:id="ratingHint" styleClass="text-subtle"/>
+        </HBox>
+
+        <Label text="Disponibilité" styleClass="form-label">
+            <VBox.margin><Insets top="8"/></VBox.margin>
+        </Label>
+        <ComboBox fx:id="availabilityCombo" maxWidth="Infinity"/>
+
+        <Region styleClass="divider">
+            <VBox.margin><Insets top="10" bottom="4"/></VBox.margin>
+        </Region>
+        <CheckBox fx:id="verifiedCheck" text="Profils vérifiés uniquement"/>
+    </VBox>
+
+    <VBox spacing="16" HBox.hgrow="ALWAYS">
+        <StackPane>
+            <TextField fx:id="searchField" promptText="Nom de l'artisan ou métier…" styleClass="field-with-icon"/>
+            <FontIcon iconLiteral="fth-search" iconSize="17" styleClass="icon-muted" mouseTransparent="true"
+                      StackPane.alignment="CENTER_LEFT">
+                <StackPane.margin><Insets left="15"/></StackPane.margin>
+            </FontIcon>
+        </StackPane>
+
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <Label fx:id="countLabel" styleClass="result-count"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label text="Trier par" styleClass="text-muted"/>
+            <ComboBox fx:id="sortCombo" prefWidth="210"/>
+        </HBox>
+
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" VBox.vgrow="ALWAYS">
+            <VBox fx:id="resultsBox" spacing="12">
+                <padding><Insets right="6" bottom="8"/></padding>
+            </VBox>
+        </ScrollPane>
+    </VBox>
+</HBox>

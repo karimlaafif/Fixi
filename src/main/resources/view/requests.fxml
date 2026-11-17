@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<!-- Mes demandes : liste à gauche, détail de la demande sélectionnée à droite.
+     Paramètre de navigation facultatif : l'id de la demande à ouvrir.
+     Contrôleur : ma.fixi.controller.RequestsController -->
+<HBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="ma.fixi.controller.RequestsController" styleClass="page-content" spacing="24">
+
+    <VBox spacing="14" minWidth="380" maxWidth="400">
+        <Button text="Nouvelle demande" styleClass="btn-primary,btn-large" maxWidth="Infinity" onAction="#onNewRequest">
+            <graphic><FontIcon iconLiteral="fth-plus" iconSize="17" styleClass="icon"/></graphic>
+        </Button>
+        <HBox spacing="8">
+            <fx:define><ToggleGroup fx:id="filterGroup"/></fx:define>
+            <ToggleButton fx:id="allFilter" styleClass="filter-chip" toggleGroup="$filterGroup" selected="true"/>
+            <ToggleButton fx:id="activeFilter" styleClass="filter-chip" toggleGroup="$filterGroup"/>
+            <ToggleButton fx:id="doneFilter" styleClass="filter-chip" toggleGroup="$filterGroup"/>
+        </HBox>
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" VBox.vgrow="ALWAYS">
+            <VBox fx:id="listBox" spacing="10">
+                <padding><Insets right="6" bottom="6"/></padding>
+            </VBox>
+        </ScrollPane>
+    </VBox>
+
+    <VBox styleClass="card" HBox.hgrow="ALWAYS" style="-fx-padding: 0;">
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" VBox.vgrow="ALWAYS">
+            <VBox fx:id="detailBox" spacing="20">
+                <padding><Insets top="22" right="24" bottom="22" left="24"/></padding>
+            </VBox>
+        </ScrollPane>
+        <!-- Barre d'actions toujours visible en bas du détail -->
+        <HBox fx:id="actionsBar" styleClass="composer" spacing="10" alignment="CENTER_RIGHT"
+              visible="false" managed="false"/>
+    </VBox>
+</HBox>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<!-- Panneau de présentation à gauche des écrans de connexion et d'inscription.
+     Contrôleur : ma.fixi.controller.BrandPanelController (taille de l'illustration). -->
+<StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="ma.fixi.controller.BrandPanelController" fx:id="root"
+           styleClass="auth-brand" HBox.hgrow="ALWAYS" minWidth="380">
+
+    <ImageView fx:id="mascot" preserveRatio="true" smooth="true" StackPane.alignment="BOTTOM_RIGHT">
+        <image><Image url="@../images/mascot.png"/></image>
+        <StackPane.margin><Insets right="20"/></StackPane.margin>
+    </ImageView>
+
+    <VBox spacing="0" pickOnBounds="false">
+        <padding><Insets top="44" right="44" bottom="40" left="44"/></padding>
+
+        <HBox alignment="CENTER_LEFT" spacing="12">
+            <ImageView fitWidth="48" fitHeight="48" preserveRatio="true" smooth="true">
+                <image><Image url="@../images/logo-mark.png"/></image>
+            </ImageView>
+            <VBox>
+                <Label text="Fixi" styleClass="logo-text"/>
+                <Label text="Connect Maison Facile" styleClass="logo-tagline"/>
+            </VBox>
+        </HBox>
+
+        <Region minHeight="40" maxHeight="72" VBox.vgrow="ALWAYS"/>
+
+        <Label text="Trouvez le bon artisan, simplement." styleClass="auth-brand-headline" wrapText="true" maxWidth="420"/>
+        <Label text="Des professionnels vérifiés près de chez vous, des devis clairs en dirhams et un suivi de chaque intervention."
+               styleClass="auth-brand-lead" wrapText="true" maxWidth="400">
+            <VBox.margin><Insets top="14"/></VBox.margin>
+        </Label>
+
+        <VBox fx:id="features" spacing="20" maxWidth="300">
+            <VBox.margin><Insets top="34"/></VBox.margin>
+            <HBox spacing="14" alignment="CENTER_LEFT">
+                <StackPane styleClass="icon-tile,tile-white" minWidth="44" minHeight="44" maxWidth="44" maxHeight="44">
+                    <FontIcon iconLiteral="fth-shield" iconSize="20" styleClass="icon"/>
+                </StackPane>
+                <VBox spacing="2">
+                    <Label text="Artisans vérifiés" styleClass="auth-feature-title"/>
+                    <Label text="Identité, ICE et assurance contrôlés" styleClass="text-muted" wrapText="true"/>
+                </VBox>
+            </HBox>
+            <HBox spacing="14" alignment="CENTER_LEFT">
+                <StackPane styleClass="icon-tile,tile-white" minWidth="44" minHeight="44" maxWidth="44" maxHeight="44">
+                    <FontIcon iconLiteral="fth-file-text" iconSize="20" styleClass="icon"/>
+                </StackPane>
+                <VBox spacing="2">
+                    <Label text="Devis transparents" styleClass="auth-feature-title"/>
+                    <Label text="Main-d'œuvre, matériaux et TVA détaillés" styleClass="text-muted" wrapText="true"/>
+                </VBox>
+            </HBox>
+            <HBox spacing="14" alignment="CENTER_LEFT">
+                <StackPane styleClass="icon-tile,tile-white" minWidth="44" minHeight="44" maxWidth="44" maxHeight="44">
+                    <FontIcon iconLiteral="fth-calendar" iconSize="20" styleClass="icon"/>
+                </StackPane>
+                <VBox spacing="2">
+                    <Label text="Suivi des interventions" styleClass="auth-feature-title"/>
+                    <Label text="De la demande à la clôture" styleClass="text-muted" wrapText="true"/>
+                </VBox>
+            </HBox>
+        </VBox>
+
+        <Region VBox.vgrow="ALWAYS"/>
+    </VBox>
+</StackPane>

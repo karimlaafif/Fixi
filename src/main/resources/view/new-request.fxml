@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<!-- Créer une demande de service. Paramètre facultatif : l'artisan choisi depuis son profil.
+     Contrôleur : ma.fixi.controller.NewRequestController -->
+<ScrollPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ma.fixi.controller.NewRequestController" fitToWidth="true" hbarPolicy="NEVER">
+    <HBox styleClass="page-content" spacing="24">
+
+        <VBox styleClass="card" spacing="0" HBox.hgrow="ALWAYS" prefWidth="680">
+            <padding><Insets top="24" right="28" bottom="24" left="28"/></padding>
+
+            <HBox fx:id="targetBox" styleClass="callout,callout-info" spacing="10" alignment="CENTER_LEFT"
+                  visible="false" managed="false">
+                <FontIcon iconLiteral="fth-user-check" iconSize="18" styleClass="icon"/>
+                <Label fx:id="targetLabel" wrapText="true"/>
+                <VBox.margin><Insets bottom="20"/></VBox.margin>
+            </HBox>
+
+            <GridPane hgap="20" vgap="0">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="55"/>
+                    <ColumnConstraints percentWidth="45"/>
+                </columnConstraints>
+
+                <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                    <HBox spacing="3"><Label text="Titre" styleClass="form-label"/><Label text="*" styleClass="text-danger"/></HBox>
+                    <TextField fx:id="titleField" promptText="Ex. Fuite sous l'évier de la cuisine"/>
+                    <Label fx:id="titleError" styleClass="field-error" visible="false" managed="false"/>
+                </VBox>
+                <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                    <HBox spacing="3"><Label text="Métier" styleClass="form-label"/><Label text="*" styleClass="text-danger"/></HBox>
+                    <ComboBox fx:id="tradeCombo" promptText="Choisir un métier" maxWidth="Infinity"/>
+                    <Label fx:id="tradeError" styleClass="field-error" visible="false" managed="false"/>
+                </VBox>
+            </GridPane>
+
+            <HBox spacing="3">
+                <VBox.margin><Insets top="18" bottom="8"/></VBox.margin>
+                <Label text="Description" styleClass="form-label"/><Label text="*" styleClass="text-danger"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Label fx:id="descriptionCounter" styleClass="text-subtle"/>
+            </HBox>
+            <TextArea fx:id="descriptionArea" wrapText="true" prefRowCount="4"
+                      promptText="Que se passe-t-il ? Depuis quand ? Où exactement ? Plus c'est précis, plus les devis seront justes."/>
+            <Label fx:id="descriptionError" styleClass="field-error" visible="false" managed="false">
+                <VBox.margin><Insets top="6"/></VBox.margin>
+            </Label>
+
+            <GridPane hgap="20" vgap="18">
+                <VBox.margin><Insets top="18"/></VBox.margin>
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="50"/>
+                    <ColumnConstraints percentWidth="50"/>
+                </columnConstraints>
+
+                <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                    <HBox spacing="3"><Label text="Ville" styleClass="form-label"/><Label text="*" styleClass="text-danger"/></HBox>
+                    <ComboBox fx:id="cityCombo" promptText="Choisir une ville" maxWidth="Infinity"/>
+                    <Label fx:id="cityError" styleClass="field-error" visible="false" managed="false"/>
+                </VBox>
+                <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                    <HBox spacing="6" alignment="BASELINE_LEFT"><Label text="Adresse" styleClass="form-label"/><Label text="(facultatif)" styleClass="form-hint"/></HBox>
+                    <TextField fx:id="addressField" promptText="Quartier, rue…"/>
+                </VBox>
+
+                <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                    <HBox spacing="3"><Label text="Date souhaitée" styleClass="form-label"/><Label text="*" styleClass="text-danger"/></HBox>
+                    <DatePicker fx:id="datePicker" promptText="jj/mm/aaaa" maxWidth="Infinity"/>
+                    <Label fx:id="dateError" styleClass="field-error" visible="false" managed="false"/>
+                </VBox>
+                <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <HBox spacing="6" alignment="BASELINE_LEFT"><Label text="Budget estimé" styleClass="form-label"/><Label text="(facultatif)" styleClass="form-hint"/></HBox>
+                    <StackPane>
+                        <TextField fx:id="budgetField" promptText="Ex. 500" style="-fx-padding: 10 60 10 14;"/>
+                        <Label text="MAD" styleClass="text-muted" mouseTransparent="true" StackPane.alignment="CENTER_RIGHT">
+                            <StackPane.margin><Insets right="14"/></StackPane.margin>
+                        </Label>
+                    </StackPane>
+                    <Label fx:id="budgetError" styleClass="field-error" visible="false" managed="false"/>
+                </VBox>
+
+                <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                    <Label text="Urgence" styleClass="form-label"/>
+                    <HBox styleClass="segmented" maxWidth="-Infinity">
+                        <fx:define><ToggleGroup fx:id="urgencyGroup"/></fx:define>
+                        <ToggleButton fx:id="normalToggle" text="Normale" toggleGroup="$urgencyGroup" selected="true" prefWidth="130"/>
+                        <ToggleButton fx:id="urgentToggle" text="Urgente" toggleGroup="$urgencyGroup" prefWidth="130">
+                            <graphic><FontIcon iconLiteral="fth-zap" iconSize="14" styleClass="icon"/></graphic>
+                        </ToggleButton>
+                    </HBox>
+                </VBox>
+            </GridPane>
+
+            <HBox spacing="6" alignment="BASELINE_LEFT">
+                <VBox.margin><Insets top="20" bottom="8"/></VBox.margin>
+                <Label text="Photos" styleClass="form-label"/><Label text="(facultatif, 5 maximum)" styleClass="form-hint"/>
+            </HBox>
+            <HBox styleClass="photo-drop" spacing="16" alignment="CENTER_LEFT">
+                <Button styleClass="btn-icon" onAction="#onAddPhotos">
+                    <graphic><FontIcon iconLiteral="fth-image" iconSize="22" styleClass="icon"/></graphic>
+                </Button>
+                <VBox spacing="2" minWidth="-Infinity">
+                    <Label text="Ajouter des photos" styleClass="semibold"/>
+                    <Label text="PNG ou JPG, 5 Mo maximum par photo" styleClass="text-subtle"/>
+                </VBox>
+                <FlowPane fx:id="photosPane" hgap="10" vgap="10" HBox.hgrow="ALWAYS" alignment="CENTER_RIGHT"/>
+            </HBox>
+            <Label fx:id="photoError" styleClass="field-error" visible="false" managed="false">
+                <VBox.margin><Insets top="6"/></VBox.margin>
+            </Label>
+
+            <HBox spacing="12" alignment="CENTER_RIGHT">
+                <VBox.margin><Insets top="26"/></VBox.margin>
+                <Button text="Annuler" styleClass="btn-ghost" onAction="#onCancel"/>
+                <Button fx:id="submitButton" text="Envoyer la demande" styleClass="btn-primary" onAction="#onSubmit">
+                    <graphic><FontIcon iconLiteral="fth-send" iconSize="16" styleClass="icon"/></graphic>
+                </Button>
+            </HBox>
+        </VBox>
+
+        <VBox spacing="14" minWidth="280" maxWidth="300">
+            <StackPane styleClass="card-hero" style="-fx-padding: 14 0 0 0;" minHeight="200">
+                <ImageView fitHeight="186" preserveRatio="true" smooth="true" StackPane.alignment="BOTTOM_CENTER">
+                    <image><Image url="@../images/mascot.png"/></image>
+                </ImageView>
+            </StackPane>
+            <VBox styleClass="card" spacing="16">
+                <Label text="Comment ça marche" styleClass="h3"/>
+                <HBox spacing="12" alignment="TOP_LEFT">
+                    <Label text="1" styleClass="step-number" minWidth="26" minHeight="26" maxWidth="26" maxHeight="26"/>
+                    <VBox spacing="2"><Label text="Décrivez votre besoin" styleClass="semibold"/>
+                        <Label text="Photos et détails aident l'artisan à chiffrer juste." styleClass="text-subtle" wrapText="true"/></VBox>
+                </HBox>
+                <HBox spacing="12" alignment="TOP_LEFT">
+                    <Label text="2" styleClass="step-number" minWidth="26" minHeight="26" maxWidth="26" maxHeight="26"/>
+                    <VBox spacing="2"><Label text="Recevez des devis" styleClass="semibold"/>
+                        <Label text="Les artisans de votre ville répondent avec un devis détaillé." styleClass="text-subtle" wrapText="true"/></VBox>
+                </HBox>
+                <HBox spacing="12" alignment="TOP_LEFT">
+                    <Label text="3" styleClass="step-number" minWidth="26" minHeight="26" maxWidth="26" maxHeight="26"/>
+                    <VBox spacing="2"><Label text="Choisissez votre artisan" styleClass="semibold"/>
+                        <Label text="Comparez prix et délais, puis acceptez le devis qui vous convient." styleClass="text-subtle" wrapText="true"/></VBox>
+                </HBox>
+            </VBox>
+            <HBox styleClass="card-tint" spacing="10" alignment="TOP_LEFT">
+                <FontIcon iconLiteral="fth-lock" iconSize="16" styleClass="icon-primary"/>
+                <Label text="Votre adresse exacte n'est partagée qu'avec l'artisan dont vous acceptez le devis."
+                       styleClass="text-subtle" wrapText="true"/>
+            </HBox>
+        </VBox>
+    </HBox>
+</ScrollPane>
