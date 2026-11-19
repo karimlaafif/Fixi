@@ -1,10 +1,6 @@
-# Fixi — Guide de Répartition du Travail d'Équipe (Itération 2)
+# Fixi — Guide de Répartition du Travail Back-End
 
-> **Destinataires :** Tous les membres du groupe Fixi  
-> **Auteur / Chef de projet :** Karim Laafif  
-> **Contexte :** Projet académique POO Avancée — Itération 2 : Développement des fonctionnalités de base, modèle MVC, persistance base de données et intégration JavaFX.
-
----
+         
 
 ## 1. Vue d'ensemble & Organisation du Groupe
 
@@ -15,7 +11,7 @@ L'interface graphique JavaFX est déjà prête et fonctionnelle. Le travail de l
 
 | Membre | Rôle Attribué | Branche Git Dédiée | Modules & Tâches Attribués | Livrables Attendus |
 |---|---|---|---|---|
-| **Karim (Chef de projet)** | Lead Architecture & Coordination | `backend` / `main` | Câblage global (`ServiceConfig`), Auth, Métiers (CRUD pilote), Villes, intégration des PRs | Socle BD, `JdbcTradeService`, `JdbcAuthService`, `JdbcCityService`, scripts de run |
+
 | **Collègue 1 (Backend Dev A)** | Responsable Métier Demandes | `feature/request-service` | Gestion des demandes de travaux (`service_request`, `request_recipient`, `status_event`) | `JdbcRequestService.java`, tests cycle de vie des demandes |
 | **Collègue 2 (Backend Dev B)** | Responsable Métier Artisans | `feature/artisan-service` | Profils artisans, recherche multi-critères, statistiques (`artisan_profile`, `artisan_trade`, `review`) | `JdbcArtisanService.java`, requêtes de recherche optimisées |
 | **Collègue 3 (QA & Intégration)** | Responsable Tests & Messagerie | `feature/tests-messaging` | Tests unitaires JUnit 5 (Tâche 5 Prof), Messagerie interne (`conversation`, `message`) | `JdbcTradeServiceTest`, `JdbcAuthServiceTest`, `JdbcMessageService.java`, rapport de tests |
