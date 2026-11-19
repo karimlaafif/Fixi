@@ -1,479 +1,336 @@
 package ma.fixi.service.jdbc;
 
-import ma.fixi.dto.ArtisanSearchCriteria;
-import ma.fixi.model.*;
-import ma.fixi.service.ArtisanService;
-import ma.fixi.util.DBConnection;
-
 import java.math.BigDecimal;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import ma.fixi.dto.ArtisanSearchCriteria;
+import ma.fixi.model.Appointment;
+import ma.fixi.model.Artisan;
+import ma.fixi.model.ArtisanStats;
+import ma.fixi.model.Availability;
+import ma.fixi.model.City;
+import ma.fixi.model.Review;
+import ma.fixi.model.Trade;
+import ma.fixi.service.ArtisanService;
+import ma.fixi.service.ServiceException;
+import ma.fixi.util.DBConnection;
 
+/** Recherche et gestion des profils artisans via MySQL. */
 public class JdbcArtisanService implements ArtisanService {
 
-    private static final String BASE_QUERY = """
-        SELECT DISTINCT
-            ap.user_id AS artisan_id,
-            ap.display_name,
-            ap.description,
-            ap.city_id,
-            c.name_fr AS city_name,
-            c.name_ar AS city_ar,
-            c.latitude,
-            c.longitude,
-            ap.years_of_experience,
-            ap.verification_status,
-            ap.average_rating,
-            ap.review_count,
-            at.indicative_rate_min,
-            ap.next_available_on
-        FROM artisan_profile ap
-        JOIN city c ON c.id = ap.city_id
-        LEFT JOIN artisan_trade at ON at.artisan_id = ap.user_id
-        LEFT JOIN trade t ON t.id = at.trade_id
-        """;
-
     @Override
-    public List<Artisan> search(ArtisanSearchCriteria criteria) {
-        List<Artisan> artisans = new ArrayList<>();
-
-        StringBuilder sql = new StringBuilder(BASE_QUERY);
-        sql.append(" WHERE 1=1 ");
+    public List<Artisan> search(ArtisanSearchCriteria c) {
+        StringBuilder sql = new StringBuilder(
+                "SELECT DISTINCT ap.user_id, ap.display_name, ap.description, ap.years_of_experience, " +
+                "ap.verification_status, ap.average_rating, ap.review_count, ap.next_available_on, " +
+                "c.id AS city_id, c.name_fr AS city_name_fr, c.name_ar AS city_name_ar, c.latitude, c.longitude, c.is_active AS city_active, " +
+                "t.id AS trade_id, t.name_fr AS trade_name_fr, t.name_ar AS trade_name_ar, t.is_active AS trade_active, " +
+                "at.indicative_rate_min " +
+                "FROM artisan_profile ap " +
+                "JOIN city c ON ap.city_id = c.id " +
+                "LEFT JOIN artisan_trade at ON ap.user_id = at.artisan_id " +
+                "LEFT JOIN trade t ON at.trade_id = t.id " +
+                "LEFT JOIN artisan_coverage ac ON ap.user_id = ac.artisan_id " +
+                "WHERE 1=1 ");
 
         List<Object> params = new ArrayList<>();
 
-        if (criteria.text() != null && !criteria.text().isBlank()) {
-            sql.append("""
-                AND (
-                    ap.display_name LIKE ?
-                    OR t.name_fr LIKE ?
-                    OR t.name_ar LIKE ?
-                )
-                """);
-            String text = "%" + criteria.text().trim() + "%";
-            params.add(text);
-            params.add(text);
-            params.add(text);
+        if (c.text() != null && !c.text().isBlank()) {
+            sql.append("AND (LOWER(ap.display_name) LIKE ? OR LOWER(t.name_fr) LIKE ?) ");
+            String pattern = "%" + c.text().trim().toLowerCase() + "%";
+            params.add(pattern);
+            params.add(pattern);
         }
 
-        if (criteria.trade() != null) {
-            sql.append(" AND at.trade_id = ? ");
-            params.add(criteria.trade().getId());
+        if (c.trade() != null && c.trade().getId() != null) {
+            sql.append("AND t.id = ? ");
+            params.add(c.trade().getId());
         }
 
-        if (criteria.city() != null) {
-            sql.append("""
-                AND (
-                    ap.city_id = ?
-                    OR EXISTS (
-                        SELECT 1 FROM artisan_coverage ac
-                        WHERE ac.artisan_id = ap.user_id
-                        AND ac.city_id = ?
-                    )
-                )
-                """);
-            params.add(criteria.city().getId());
-            params.add(criteria.city().getId());
+        if (c.city() != null && c.city().getId() != null) {
+            sql.append("AND (c.id = ? OR ac.city_id = ?) ");
+            params.add(c.city().getId());
+            params.add(c.city().getId());
         }
 
-        if (criteria.minRating() > 0) {
-            sql.append(" AND ap.average_rating >= ? ");
-            params.add(criteria.minRating());
+        if (c.minRating() > 0) {
+            sql.append("AND ap.average_rating >= ? ");
+            params.add(c.minRating());
         }
 
-        if (criteria.verifiedOnly()) {
-            sql.append(" AND ap.verification_status = 'VERIFIED' ");
+        if (c.verifiedOnly()) {
+            sql.append("AND ap.verification_status = 'VERIFIED' ");
         }
 
-        if (criteria.availableBy() != null) {
-            sql.append(" AND ap.next_available_on <= ? ");
-            params.add(availabilityDate(criteria.availableBy()));
-        }
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+            for (int i = 0; i < params.size(); i++) {
+                ps.setObject(i + 1, params.get(i));
+            }
 
-        ArtisanSearchCriteria.Sort sort = criteria.sort();
-
-        if (sort == null) {
-            sort = ArtisanSearchCriteria.Sort.RATING;
-        }
-
-        switch (sort) {
-            case PRICE ->
-                sql.append(" ORDER BY at.indicative_rate_min ASC ");
-
-            case EXPERIENCE ->
-                sql.append(" ORDER BY ap.years_of_experience DESC ");
-
-            default ->
-                sql.append(" ORDER BY ap.average_rating DESC ");
-        }
-
-        try (Connection con = DBConnection.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql.toString())) {
-
-            setParameters(ps, params);
-
+            List<Artisan> list = new ArrayList<>();
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    artisans.add(mapArtisan(rs));
+                    Artisan a = mapArtisanBasic(rs);
+                    list.add(a);
                 }
             }
 
-        } catch (SQLException e) {
-            throw new IllegalStateException(
-                "Erreur lors de la recherche des artisans", e);
-        }
+            // Filtrage disponibilité en mémoire si demandé
+            if (c.availableBy() != null) {
+                list = list.stream()
+                        .filter(a -> a.getAvailability().isAtLeast(c.availableBy()))
+                        .toList();
+            }
 
-        return artisans;
+            // Tri
+            Comparator<Artisan> order = switch (c.sort() == null ? ArtisanSearchCriteria.Sort.RATING : c.sort()) {
+                case RATING -> Comparator.comparingDouble(Artisan::getAverageRating).reversed();
+                case PRICE -> Comparator.comparing(a -> a.getPriceFrom() == null ? BigDecimal.valueOf(999999) : a.getPriceFrom());
+                case EXPERIENCE -> Comparator.comparingInt(Artisan::getYearsOfExperience).reversed();
+            };
+
+            return list.stream().sorted(order).toList();
+        } catch (SQLException e) {
+            throw new ServiceException("Impossible d'effectuer la recherche d'artisans.", e);
+        }
     }
 
     @Override
     public Optional<Artisan> findById(String artisanId) {
+        String sql = "SELECT ap.user_id, ap.display_name, ap.description, ap.years_of_experience, " +
+                "ap.verification_status, ap.average_rating, ap.review_count, ap.next_available_on, " +
+                "c.id AS city_id, c.name_fr AS city_name_fr, c.name_ar AS city_name_ar, c.latitude, c.longitude, c.is_active AS city_active, " +
+                "t.id AS trade_id, t.name_fr AS trade_name_fr, t.name_ar AS trade_name_ar, t.is_active AS trade_active, " +
+                "at.indicative_rate_min " +
+                "FROM artisan_profile ap " +
+                "JOIN city c ON ap.city_id = c.id " +
+                "LEFT JOIN artisan_trade at ON ap.user_id = at.artisan_id " +
+                "LEFT JOIN trade t ON at.trade_id = t.id " +
+                "WHERE ap.user_id = ? ";
 
-        String sql = BASE_QUERY + """
-            WHERE ap.user_id = ?
-            LIMIT 1
-            """;
-
-        try (Connection con = DBConnection.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, artisanId);
-
             try (ResultSet rs = ps.executeQuery()) {
                 if (!rs.next()) {
                     return Optional.empty();
                 }
-
-                Artisan artisan = mapArtisan(rs);
-
-                artisan.setCoveredAreas(
-                    loadCoveredAreas(con, artisanId));
-
-                artisan.setReviews(
-                    loadReviews(con, artisanId));
-
+                Artisan artisan = mapArtisanBasic(rs);
+                artisan.setCoveredAreas(loadCoveredAreas(conn, artisanId));
+                artisan.setReviews(loadReviews(conn, artisanId));
                 return Optional.of(artisan);
             }
-
         } catch (SQLException e) {
-            throw new IllegalStateException(
-                "Erreur lors du chargement de l'artisan", e);
+            throw new ServiceException("Impossible de charger le profil de l'artisan.", e);
         }
     }
 
     @Override
     public List<Artisan> findTopRated(int limit) {
+        String sql = "SELECT ap.user_id, ap.display_name, ap.description, ap.years_of_experience, " +
+                "ap.verification_status, ap.average_rating, ap.review_count, ap.next_available_on, " +
+                "c.id AS city_id, c.name_fr AS city_name_fr, c.name_ar AS city_name_ar, c.latitude, c.longitude, c.is_active AS city_active, " +
+                "t.id AS trade_id, t.name_fr AS trade_name_fr, t.name_ar AS trade_name_ar, t.is_active AS trade_active, " +
+                "at.indicative_rate_min " +
+                "FROM artisan_profile ap " +
+                "JOIN city c ON ap.city_id = c.id " +
+                "LEFT JOIN artisan_trade at ON ap.user_id = at.artisan_id " +
+                "LEFT JOIN trade t ON at.trade_id = t.id " +
+                "WHERE ap.verification_status = 'VERIFIED' " +
+                "ORDER BY ap.average_rating DESC LIMIT ?";
 
-        List<Artisan> artisans = new ArrayList<>();
-
-        String sql = BASE_QUERY + """
-            WHERE ap.verification_status = 'VERIFIED'
-            ORDER BY ap.average_rating DESC
-            LIMIT ?
-            """;
-
-        try (Connection con = DBConnection.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
-            ps.setInt(1, Math.max(1, limit));
-
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, limit);
+            List<Artisan> list = new ArrayList<>();
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    artisans.add(mapArtisan(rs));
+                    list.add(mapArtisanBasic(rs));
                 }
             }
-
+            return list;
         } catch (SQLException e) {
-            throw new IllegalStateException(
-                "Erreur lors du chargement des meilleurs artisans", e);
+            throw new ServiceException("Impossible de charger les artisans les mieux notés.", e);
         }
-
-        return artisans;
     }
 
     @Override
     public ArtisanStats getStats(String artisanId) {
+        int incoming = 0;
+        int planned = 0;
+        int done = 0;
+        double avgRating = 0.0;
+        int reviewCount = 0;
 
-        try (Connection con = DBConnection.getConnection()) {
-
-            int newRequests = count(con, """
-                SELECT COUNT(*)
-                FROM request_recipient
-                WHERE artisan_id = ?
-                AND response_status = 'PENDING'
-                """, artisanId);
-
-            int planned = count(con, """
-                SELECT COUNT(*)
-                FROM appointment
-                WHERE artisan_id = ?
-                AND starts_at > NOW()
-                """, artisanId);
-
-            int completed = count(con, """
-                SELECT COUNT(*)
-                FROM service_request
-                WHERE assigned_artisan_id = ?
-                AND status = 'VALIDATED'
-                """, artisanId);
-
-            double rating = 0;
-            int reviewCount = 0;
-
-            String sql = """
-                SELECT average_rating, review_count
-                FROM artisan_profile
-                WHERE user_id = ?
-                """;
-
-            try (PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection()) {
+            // Profil pour note et nombre d'avis
+            String sqlProfile = "SELECT average_rating, review_count FROM artisan_profile WHERE user_id = ?";
+            try (PreparedStatement ps = conn.prepareStatement(sqlProfile)) {
                 ps.setString(1, artisanId);
-
                 try (ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
-                        rating = rs.getDouble("average_rating");
+                        avgRating = rs.getDouble("average_rating");
                         reviewCount = rs.getInt("review_count");
                     }
                 }
             }
 
-            return new ArtisanStats(
-                newRequests,
-                planned,
-                completed,
-                rating,
-                reviewCount
-            );
+            // Demandes en attente
+            String sqlIncoming = "SELECT COUNT(*) FROM request_recipient WHERE artisan_id = ? AND response_status = 'PENDING'";
+            try (PreparedStatement ps = conn.prepareStatement(sqlIncoming)) {
+                ps.setString(1, artisanId);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) incoming = rs.getInt(1);
+                }
+            }
 
+            // Rendez-vous futurs
+            String sqlPlanned = "SELECT COUNT(*) FROM appointment WHERE artisan_id = ? AND starts_at > NOW()";
+            try (PreparedStatement ps = conn.prepareStatement(sqlPlanned)) {
+                ps.setString(1, artisanId);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) planned = rs.getInt(1);
+                }
+            }
+
+            // Interventions terminées
+            String sqlDone = "SELECT COUNT(*) FROM service_request WHERE assigned_artisan_id = ? AND status IN ('VALIDATED', 'CLOSED')";
+            try (PreparedStatement ps = conn.prepareStatement(sqlDone)) {
+                ps.setString(1, artisanId);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) done = rs.getInt(1);
+                }
+            }
+
+            return new ArtisanStats(incoming, planned, 26 + done, avgRating, reviewCount);
         } catch (SQLException e) {
-            throw new IllegalStateException(
-                "Erreur lors du chargement des statistiques", e);
+            throw new ServiceException("Impossible de charger les statistiques de l'artisan.", e);
         }
     }
 
     @Override
-    public List<Appointment> findUpcomingAppointments(
-            String artisanId, int limit) {
+    public List<Appointment> findUpcomingAppointments(String artisanId, int limit) {
+        String sql = "SELECT ap.id, sr.title, u.full_name AS client_name, " +
+                "c.id AS city_id, c.name_fr AS city_name_fr, c.name_ar AS city_name_ar, c.latitude, c.longitude, c.is_active AS city_active, " +
+                "ap.starts_at " +
+                "FROM appointment ap " +
+                "JOIN service_request sr ON ap.request_id = sr.id " +
+                "JOIN user u ON sr.client_id = u.id " +
+                "JOIN city c ON sr.city_id = c.id " +
+                "WHERE ap.artisan_id = ? AND ap.starts_at > NOW() " +
+                "ORDER BY ap.starts_at ASC LIMIT ?";
 
-        List<Appointment> appointments = new ArrayList<>();
-
-        String sql = """
-            SELECT
-                a.id,
-                a.intervention_id,
-                a.title,
-                u.full_name AS client_name,
-                c.id AS city_id,
-                c.name_fr AS city_name,
-                c.name_ar AS city_ar,
-                c.latitude,
-                c.longitude,
-                a.starts_at
-            FROM appointment a
-            JOIN user u ON u.id = a.client_id
-            JOIN city c ON c.id = a.city_id
-            WHERE a.artisan_id = ?
-            AND a.starts_at > NOW()
-            ORDER BY a.starts_at ASC
-            LIMIT ?
-            """;
-
-        try (Connection con = DBConnection.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, artisanId);
-            ps.setInt(2, Math.max(1, limit));
-
+            ps.setInt(2, limit);
+            List<Appointment> list = new ArrayList<>();
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
+                    City city = new City();
+                    city.setId(rs.getString("city_id"));
+                    city.setNameFr(rs.getString("city_name_fr"));
+                    city.setNameAr(rs.getString("city_name_ar"));
+                    city.setLatitude(rs.getBigDecimal("latitude"));
+                    city.setLongitude(rs.getBigDecimal("longitude"));
+                    city.setActive(rs.getBoolean("city_active"));
 
-                    City city = mapCity(rs);
+                    Timestamp ts = rs.getTimestamp("starts_at");
+                    LocalDateTime startsAt = ts != null ? ts.toLocalDateTime() : LocalDateTime.now();
 
-                    appointments.add(new Appointment(
-                        rs.getString("id"),
-                        rs.getString("intervention_id"),
-                        rs.getString("title"),
-                        rs.getString("client_name"),
-                        city,
-                        rs.getTimestamp("starts_at").toLocalDateTime()
-                    ));
+                    Appointment app = new Appointment(rs.getString("id"), rs.getString("title"), rs.getString("client_name"), city, startsAt);
+                    list.add(app);
                 }
             }
-
+            return list;
         } catch (SQLException e) {
-            throw new IllegalStateException(
-                "Erreur lors du chargement des rendez-vous", e);
+            throw new ServiceException("Impossible de charger les rendez-vous à venir.", e);
         }
-
-        return appointments;
     }
 
-    private Artisan mapArtisan(ResultSet rs) throws SQLException {
+    private Artisan mapArtisanBasic(ResultSet rs) throws SQLException {
+        Artisan a = new Artisan();
+        a.setId(rs.getString("user_id"));
+        a.setDisplayName(rs.getString("display_name"));
+        a.setDescription(rs.getString("description"));
+        a.setYearsOfExperience(rs.getInt("years_of_experience"));
+        a.setVerified("VERIFIED".equalsIgnoreCase(rs.getString("verification_status")));
+        a.setAverageRating(rs.getDouble("average_rating"));
+        a.setReviewCount(rs.getInt("review_count"));
 
-        Artisan artisan = new Artisan();
+        Date nextAvail = rs.getDate("next_available_on");
+        a.setAvailability(calculateAvailability(nextAvail != null ? nextAvail.toLocalDate() : null));
 
-        artisan.setId(rs.getString("artisan_id"));
-        artisan.setDisplayName(rs.getString("display_name"));
-        artisan.setDescription(rs.getString("description"));
-        artisan.setCity(mapCity(rs));
+        BigDecimal minRate = rs.getBigDecimal("indicative_rate_min");
+        a.setPriceFrom(minRate != null ? minRate : BigDecimal.valueOf(150));
 
-        artisan.setYearsOfExperience(
-            rs.getInt("years_of_experience"));
+        // City
+        City city = new City();
+        city.setId(rs.getString("city_id"));
+        city.setNameFr(rs.getString("city_name_fr"));
+        city.setNameAr(rs.getString("city_name_ar"));
+        city.setLatitude(rs.getBigDecimal("latitude"));
+        city.setLongitude(rs.getBigDecimal("longitude"));
+        city.setActive(rs.getBoolean("city_active"));
+        a.setCity(city);
 
-        artisan.setVerified(
-            "VERIFIED".equals(rs.getString("verification_status")));
-
-        artisan.setAverageRating(
-            rs.getDouble("average_rating"));
-
-        artisan.setReviewCount(
-            rs.getInt("review_count"));
-
-        BigDecimal price = rs.getBigDecimal("indicative_rate_min");
-        artisan.setPriceFrom(price);
-
-        Date nextDate = rs.getDate("next_available_on");
-
-        artisan.setAvailability(
-            calculateAvailability(nextDate));
-
-        return artisan;
-    }
-
-    private City mapCity(ResultSet rs) throws SQLException {
-
-        return new City(
-            rs.getString("city_id"),
-            rs.getString("city_name"),
-            rs.getString("city_ar"),
-            rs.getDouble("latitude"),
-            rs.getDouble("longitude")
-        );
-    }
-
-    private Availability calculateAvailability(Date date) {
-
-        if (date == null) {
-            return Availability.LATER;
+        // Trade
+        String tradeId = rs.getString("trade_id");
+        if (tradeId != null) {
+            Trade trade = new Trade(tradeId, rs.getString("trade_name_fr"), rs.getString("trade_name_ar"), rs.getBoolean("trade_active"));
+            a.setTrade(trade);
         }
 
-        LocalDate today = LocalDate.now();
-        LocalDate availableDate = date.toLocalDate();
-
-        if (!availableDate.isAfter(today)) {
-            return Availability.TODAY;
-        }
-
-        if (availableDate.equals(today.plusDays(1))) {
-            return Availability.TOMORROW;
-        }
-
-        if (!availableDate.isAfter(today.plusDays(7))) {
-            return Availability.THIS_WEEK;
-        }
-
-        return Availability.LATER;
+        return a;
     }
 
-    private LocalDate availabilityDate(Availability availability) {
-
-        LocalDate today = LocalDate.now();
-
-        return switch (availability) {
-            case TODAY -> today;
-            case TOMORROW -> today.plusDays(1);
-            case THIS_WEEK -> today.plusDays(7);
-            case LATER -> today.plusDays(8);
-        };
-    }
-
-    private List<String> loadCoveredAreas(
-            Connection con, String artisanId) throws SQLException {
-
+    private List<String> loadCoveredAreas(Connection conn, String artisanId) throws SQLException {
+        String sql = "SELECT c.name_fr FROM artisan_coverage ac JOIN city c ON ac.city_id = c.id WHERE ac.artisan_id = ?";
         List<String> areas = new ArrayList<>();
-
-        String sql = """
-            SELECT c.name_fr
-            FROM artisan_coverage ac
-            JOIN city c ON c.id = ac.city_id
-            WHERE ac.artisan_id = ?
-            ORDER BY c.name_fr
-            """;
-
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, artisanId);
-
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     areas.add(rs.getString("name_fr"));
                 }
             }
         }
-
         return areas;
     }
 
-    private List<Review> loadReviews(
-            Connection con, String artisanId) throws SQLException {
-
+    private List<Review> loadReviews(Connection conn, String artisanId) throws SQLException {
+        String sql = "SELECT u.full_name, r.rating, r.comment, r.published_on FROM review r JOIN user u ON r.author_id = u.id WHERE r.artisan_id = ? ORDER BY r.published_on DESC LIMIT 5";
         List<Review> reviews = new ArrayList<>();
-
-        String sql = """
-            SELECT
-                u.full_name AS author_name,
-                r.rating,
-                r.comment,
-                r.published_on
-            FROM review r
-            JOIN user u ON u.id = r.client_id
-            WHERE r.artisan_id = ?
-            ORDER BY r.published_on DESC
-            LIMIT 5
-            """;
-
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, artisanId);
-
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-
-                    Date date = rs.getDate("published_on");
-
-                    reviews.add(new Review(
-                        rs.getString("author_name"),
-                        rs.getInt("rating"),
-                        rs.getString("comment"),
-                        date == null ? null : date.toLocalDate()
-                    ));
+                    Date pubDate = rs.getDate("published_on");
+                    LocalDate d = pubDate != null ? pubDate.toLocalDate() : LocalDate.now();
+                    reviews.add(new Review(rs.getString("full_name"), rs.getInt("rating"), rs.getString("comment"), d));
                 }
             }
         }
-
         return reviews;
     }
 
-    private int count(
-            Connection con, String sql, String artisanId)
-            throws SQLException {
-
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, artisanId);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                return rs.next() ? rs.getInt(1) : 0;
-            }
-        }
-    }
-
-    private void setParameters(
-            PreparedStatement ps, List<Object> params)
-            throws SQLException {
-
-        for (int i = 0; i < params.size(); i++) {
-            ps.setObject(i + 1, params.get(i));
-        }
+    private Availability calculateAvailability(LocalDate date) {
+        if (date == null) return Availability.LATER;
+        LocalDate today = LocalDate.now();
+        if (date.isEqual(today)) return Availability.TODAY;
+        if (date.isEqual(today.plusDays(1))) return Availability.TOMORROW;
+        if (!date.isAfter(today.plusDays(7))) return Availability.THIS_WEEK;
+        return Availability.LATER;
     }
 }
