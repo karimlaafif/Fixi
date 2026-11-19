@@ -1,4 +1,4 @@
-# Fixi — Application de mise en relation entre clients et artisans
+# Fixi : Application de mise en relation entre clients et artisans
 
 > **Trouver le bon artisan. Comprendre le prix. Suivre chaque intervention.**
 >
